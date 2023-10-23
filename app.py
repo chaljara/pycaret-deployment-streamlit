@@ -3,6 +3,7 @@ from google.cloud import storage
 from google.colab import auth
 from pycaret.clustering import *
 from pycaret.anomaly import AnomalyExperiment
+import streamlit as st
 
 #model = load_model('deployment_28042020')
 def load():
@@ -43,7 +44,7 @@ def predict(model, input_df):
 
 
 def run():
-    return
+    st.write(df)
 
 if __name__ == '__main__':
     load()
