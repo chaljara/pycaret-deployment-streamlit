@@ -1,4 +1,4 @@
-pip==23.3.1
-pandas==1.5.3
-streamlit==1.27.2
-pycaret==3.1.0
+pip<=23.3.1
+pandas<=1.5.3
+streamlit<=1.27.2
+pycaret<=3.1.0
