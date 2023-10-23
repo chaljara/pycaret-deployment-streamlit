@@ -1,13 +1,13 @@
 import pandas as pd
 from google.cloud import storage
-from google.colab import auth
+#from google.colab import auth
 from pycaret.clustering import *
 from pycaret.anomaly import AnomalyExperiment
 import streamlit as st
 
 #model = load_model('deployment_28042020')
 def load():
-    auth.authenticate_user()
+    #auth.authenticate_user()
 
     project_id = 'mcd-proyecto'
     bucket_name = "mcdproyectobucket"
