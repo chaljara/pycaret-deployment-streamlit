@@ -1,2 +1,4 @@
-pycaret==1.0.0
+pycaret
+pyopenssl
+cryptography
 streamlit
