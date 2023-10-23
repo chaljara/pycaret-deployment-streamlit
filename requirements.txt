@@ -1,4 +1,2 @@
-pycaret
-pyopenssl
-cryptography
+pycaret=3.1.0
 streamlit
