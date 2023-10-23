@@ -1,2 +1,2 @@
 streamlit
-pycaret[models]
+pycaret
