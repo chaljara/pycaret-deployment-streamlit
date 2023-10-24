@@ -16,8 +16,6 @@ def load():
     
     credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
     storage_client = storage.Client(project=project_id, credentials=credentials)
-
-    storage_client = storage.Client(project=project_id)
     
     # Specify the bucket and file
     bucket = storage_client.get_bucket(bucket_name)
