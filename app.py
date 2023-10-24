@@ -23,7 +23,8 @@ def load():
     bucket = storage_client.get_bucket(bucket_name)
     
     blob = bucket.blob(file_name)
-    downloaded_file_path = "/content/dataset.csv"
+    #downloaded_file_path = "/content/dataset.csv"
+    downloaded_file_path = "dataset.csv"
     blob.download_to_filename(downloaded_file_path)
     
     blob2 = bucket.blob(kmeans_model_1 + ".pkl")
