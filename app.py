@@ -5,11 +5,9 @@ from pycaret.clustering import *
 from pycaret.anomaly import AnomalyExperiment
 import streamlit as st
 
-dataset = []
+data = []
 
 def load():
-    #auth.authenticate_user()
-
     project_id = 'mcd-proyecto'
     bucket_name = "mcdproyectobucket"
     file_name = "dataset-v5-ofuscated.csv"
@@ -35,23 +33,17 @@ def load():
     
     blob3 = bucket.blob(kmeans_model_2 + ".pkl")
     downloaded_file_path = kmeans_model_2 + ".pkl"
-    blob3.download_to_filename(downloaded_file_path)
-
-def preprocess():
-    dataset = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
-    dataset['DATETIME'] = pd.to_datetime(dataset['DATETIME'])
-    st.write(dataset.shape)
+    blob3.download_to_filename(downloaded_file_path)   
     
-def predict(model, input_df):
-    #predictions_df = predict_model(estimator=model, data=input_df)
-    #predictions = predictions_df['Label'][0]
-    return #predictions
-
-
-def run():
-    st.write(dataset.shape)
+def getData():
+    data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
+    data['DATETIME'] = pd.to_datetime(data['DATETIME'])
+    return data
+       
 
 if __name__ == '__main__':
     load()
-    preprocess()
-    run()
+    
+    data = getData()
+    
+    st.write(data) 
