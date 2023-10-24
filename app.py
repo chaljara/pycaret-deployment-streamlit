@@ -21,10 +21,12 @@ def load():
     
     # Specify the bucket and file
     bucket = storage_client.get_bucket(bucket_name)
-    
+    st.write(bucket_name)
     blob = bucket.blob(file_name)
     #downloaded_file_path = "/content/dataset.csv"
     downloaded_file_path = "dataset.csv"
+    st.write(downloaded_file_path)
+    
     blob.download_to_filename(downloaded_file_path)
     
     blob2 = bucket.blob(kmeans_model_1 + ".pkl")
@@ -38,6 +40,7 @@ def load():
 def preprocess():
     data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
     data['DATETIME'] = pd.to_datetime(data['DATETIME'])
+    st.write(data.shape)
     
 def predict(model, input_df):
     #predictions_df = predict_model(estimator=model, data=input_df)
