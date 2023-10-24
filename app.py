@@ -80,7 +80,7 @@ def evaluate():
     
     auth = {"project": project_id, "bucket": bucket_name}
     kmeans_no_geo_downtime = load_model(model_name=kmeans_model_1, platform="gcp", authentication=auth)
-    kmeans_no_geo_downtime_grouped = load_model(kmeans_model_2, platform="gcp", authentication=auth)
+    kmeans_no_geo_downtime_grouped = load_model(model_name=kmeans_model_2, platform="gcp", authentication=auth)
 
     s_no_geo_downtime = ClusteringExperiment()
     s_no_geo_downtime_grouped = ClusteringExperiment()
