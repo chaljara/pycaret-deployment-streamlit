@@ -6,15 +6,15 @@ from pycaret.anomaly import AnomalyExperiment
 import streamlit as st
 
 data = []
+project_id = 'mcd-proyecto'
+bucket_name = "mcdproyectobucket"
+file_name = "dataset-v5-ofuscated.csv"
+kmeans_model_1 = "kmeans_model_downtime"
+kmeans_model_2 = "kmeans_model_downtime_grouped"
+iforest_model_1 = "iforest_model_downtime"
+iforest_model_2 = "iforest_model_downtime_grouped"
 
 def load():
-    project_id = 'mcd-proyecto'
-    bucket_name = "mcdproyectobucket"
-    file_name = "dataset-v5-ofuscated.csv"
-    kmeans_model_1 = "kmeans_model_downtime"
-    kmeans_model_2 = "kmeans_model_downtime_grouped"
-    iforest_model_1 = "iforest_model_downtime"
-    iforest_model_2 = "iforest_model_downtime_grouped"
     
     credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
     storage_client = storage.Client(project=project_id, credentials=credentials)
