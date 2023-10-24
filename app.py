@@ -21,7 +21,7 @@ def load():
     
     # Specify the bucket and file
     bucket = storage_client.get_bucket(bucket_name)
-    st.write(bucket_name)
+    
     blob = bucket.blob(file_name)
     dataset_filename = "dataset.csv"
     
