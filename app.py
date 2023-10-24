@@ -1,11 +1,10 @@
 import pandas as pd
 from google.cloud import storage
-#from google.colab import auth
+from google.oauth2 import service_account
 from pycaret.clustering import *
 from pycaret.anomaly import AnomalyExperiment
 import streamlit as st
 
-#model = load_model('deployment_28042020')
 def load():
     #auth.authenticate_user()
 
@@ -15,6 +14,9 @@ def load():
     kmeans_model_1 = "kmeans_model_downtime"
     kmeans_model_2 = "kmeans_model_downtime_grouped"
     
+    credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
+    storage_client = storage.Client(project=project_id, credentials=credentials)
+
     storage_client = storage.Client(project=project_id)
     
     # Specify the bucket and file
