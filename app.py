@@ -13,6 +13,8 @@ def load():
     file_name = "dataset-v5-ofuscated.csv"
     kmeans_model_1 = "kmeans_model_downtime"
     kmeans_model_2 = "kmeans_model_downtime_grouped"
+    iforest_model_1 = "iforest_model_downtime"
+    iforest_model_2 = "iforest_model_downtime_grouped"
     
     credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
     storage_client = storage.Client(project=project_id, credentials=credentials)
@@ -81,12 +83,14 @@ def evaluate():
     auth = {"project": project_id, "bucket": bucket_name}
     kmeans_no_geo_downtime = load_model(model_name=kmeans_model_1, platform="gcp", authentication=auth)
     kmeans_no_geo_downtime_grouped = load_model(model_name=kmeans_model_2, platform="gcp", authentication=auth)
-
+    iforest_downtime = load_model(model_name=iforest_model_1, platform="gcp", authentication=auth)
+    iforest_downtime_grouped = load_model(iforest_model_2, platform="gcp", authentication=auth)
+    
     s_no_geo_downtime = ClusteringExperiment()
     s_no_geo_downtime_grouped = ClusteringExperiment()
     
-    model = AnomalyExperiment()
-    model_group = AnomalyExperiment()
+    iforest_model = AnomalyExperiment()
+    iforest_model_grouped = AnomalyExperiment()
 
     s_no_geo_downtime.setup(data_pivot_no_geo,
                             normalize = True,
@@ -94,18 +98,29 @@ def evaluate():
                             ordinal_features=None,
                             categorical_features=["CUSTOMER", "MODEL", "FUNCTION", "FAMILY", "SITE", "COUNTRY"])
     
-    s_no_geo_downtime_grouped.setup(data_pivot_no_geo,
-                                    normalize = True,
-                                    group_features = columnsByDevice,
-                                    ignore_features=["ID"],
-                                    ordinal_features=None,
-                                    categorical_features=["CUSTOMER", "MODEL", "FUNCTION", "FAMILY", "SITE", "COUNTRY"])
+    #s_no_geo_downtime_grouped.setup(data_pivot_no_geo,
+    #                                normalize = True,
+    #                                group_features = columnsByDevice,
+    #                                ignore_features=["ID"],
+    #                                ordinal_features=None,
+    #                                categorical_features=["CUSTOMER", "MODEL", "FUNCTION", "FAMILY", "SITE", "COUNTRY"])
 
-    s_no_geo_downtime.evaluate_model(kmeans_no_geo_downtime)
-
-    result_kmeans = s_no_geo_downtime.assign_model(kmeans_no_geo_downtime)
+    iforest_model.setup(data_pivot_no_geo, session_id = 123, ignore_features=["ID"])
+    #iforest_model_grouped.setup(data_pivot_no_geo, session_id = 124, group_features=columnsByDevice, ignore_features=["ID"])
     
-    return result_kmeans
+    s_no_geo_downtime.evaluate_model(kmeans_no_geo_downtime)
+    iforest_model.evaluate_model(iforest_downtime)
+    
+    result_kmeans = s_no_geo_downtime.assign_model(kmeans_no_geo_downtime)
+    result_iforest = iforest_model.assign_model(iforest_downtime)
+    
+    kmeans_labels = result_kmeans["Cluster"].reset_index()
+    iforest_labels = result_iforest.loc[:,["Anomaly", "Anomaly_Score"]].reset_index()
+
+    merged = pd.merge(kmeans_labels, iforest_labels, on='ID')
+    cluster_anomaly = merged.groupby(["Cluster", "Anomaly"]).count()
+    
+    return cluster_anomaly
        
 
 if __name__ == '__main__':
