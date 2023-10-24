@@ -5,6 +5,8 @@ from pycaret.clustering import *
 from pycaret.anomaly import AnomalyExperiment
 import streamlit as st
 
+data = []
+
 def load():
     #auth.authenticate_user()
 
@@ -35,7 +37,6 @@ def load():
 def preprocess():
     data = pd.read_csv('/content/dataset.csv', sep=";", encoding="UTF-8")
     data['DATETIME'] = pd.to_datetime(data['DATETIME'])
-    print(data.shape)
     
 def predict(model, input_df):
     #predictions_df = predict_model(estimator=model, data=input_df)
@@ -44,7 +45,7 @@ def predict(model, input_df):
 
 
 def run():
-    st.write(df)
+    st.write(data)
 
 if __name__ == '__main__':
     load()
