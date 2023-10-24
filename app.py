@@ -28,15 +28,15 @@ def load():
     blob.download_to_filename(downloaded_file_path)
     
     blob2 = bucket.blob(kmeans_model_1 + ".pkl")
-    downloaded_file_path = "/content/" + kmeans_model_1 + ".pkl"
+    downloaded_file_path = kmeans_model_1 + ".pkl"
     blob2.download_to_filename(downloaded_file_path)
     
     blob3 = bucket.blob(kmeans_model_2 + ".pkl")
-    downloaded_file_path = "/content/" + kmeans_model_2 + ".pkl"
+    downloaded_file_path = kmeans_model_2 + ".pkl"
     blob3.download_to_filename(downloaded_file_path)
 
 def preprocess():
-    data = pd.read_csv('/content/dataset.csv', sep=";", encoding="UTF-8")
+    data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
     data['DATETIME'] = pd.to_datetime(data['DATETIME'])
     
 def predict(model, input_df):
