@@ -35,7 +35,7 @@ def load():
 
 
     
-def getData():
+def evaluate():
     data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
     data['DATETIME'] = pd.to_datetime(data['DATETIME'])
 
@@ -68,9 +68,7 @@ def getData():
     data_pivot_no_geo["SITE"] = categories["SITE"]
     data_pivot_no_geo["COUNTRY"] = categories["COUNTRY"]
 
-    return data_pivot_no_geo
 
-def evaluate(data_pivot_no_geo):
     step = 12
     columnsByDevice = {}
     columnsByDeviceEvents = {}
@@ -107,14 +105,12 @@ def evaluate(data_pivot_no_geo):
 
     result_kmeans = s_no_geo_downtime.assign_model(kmeans_no_geo_downtime)
     
-    return data_pivot_no_geo
+    return result_kmeans
        
 
 if __name__ == '__main__':
     load()
-    
-    data = getData()
 
-    result = evaluate(data)
+    result = evaluate()
     
     st.write(result) 
