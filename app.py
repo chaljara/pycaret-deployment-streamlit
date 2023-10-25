@@ -149,10 +149,15 @@ if __name__ == '__main__':
         customerSelected = st.selectbox(
             "Seleccione un cliente: ",
             customers,
-            key="selectbox_customers",
-            on_change=lambda new_option: st.write(f"Seleccionaste: {customerSelected}")
+            key="selectbox_customers"#,
+            #on_change=lambda new_option: st.write(f"Seleccionaste: {customerSelected}")
         )
-    
+        
+        data_filtered = pd.DataFrame(data_pivot_no_geo.reset_index(), copy=True)
+        data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected][["ID"]]
+
+        st.dataframe(data_filtered, hide_index=True)
+        st.write("shape: {data_filtered.shape}")
     with col2:
         st.checkbox("Disable selectbox widget", key="disabled")
         st.radio(
@@ -163,8 +168,3 @@ if __name__ == '__main__':
     
     if st.session_state.selectbox_customers != customerSelected:
         st.session_state.selectbox_customers = customerSelected
-        
-        data_filtered = pd.DataFrame(data_pivot_no_geo.reset_index(), copy=True)
-        data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected][["ID"]]
-
-        st.write(data_filtered)
