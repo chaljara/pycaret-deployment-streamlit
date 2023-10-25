@@ -1,9 +1,10 @@
-import pandas as pd
 from google.cloud import storage
 from google.oauth2 import service_account
 from pycaret.clustering import *
 from pycaret.anomaly import AnomalyExperiment
 import streamlit as st
+import pandas as pd
+import numpy as np
 
 project_id = 'mcd-proyecto'
 bucket_name = "mcdproyectobucket"
