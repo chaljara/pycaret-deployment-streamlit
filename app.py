@@ -128,4 +128,33 @@ if __name__ == '__main__':
 
     result = evaluate()
     
-    st.write(result) 
+    #Customers
+    customers = categories.sort_values(by="CUSTOMER", ascending=True)["CUSTOMER"].unique()
+    st.selectbox("Cliente: ", customers)
+    st.write(f"Has seleccionado: {customerSelected}")
+    
+    col1, col2 = st.columns(2)
+
+    with col1:
+        customerSelected = st.selectbox(
+            "Seleccione un cliente: ",
+            customers,
+            key="selectbox_customers",
+            on_change=lambda new_option: st.write(f"Seleccionaste: {customerSelected}"
+        )
+        
+    
+    with col2:
+        st.checkbox("Disable selectbox widget", key="disabled")
+        st.radio(
+            "Set selectbox label visibility 👉",
+            key="visibility",
+            options=["visible", "hidden", "collapsed"],
+        )
+    
+    if st.session_state.selectbox_customers != customerSelected:
+        st.session_state.selectbox_customers = customerSelected
+        data_filtered = pd.DataFrame(data_pivot_no_geo.reset_index(), copy=True)
+        data_filtered = data_filtered.loc[data_filtered['CUSTOMER'] == "Customer COL 1"][["ID"]]
+
+        st.write(data_filtered)
