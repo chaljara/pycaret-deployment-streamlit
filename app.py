@@ -143,7 +143,9 @@ def evaluate():
     anomaly_cluster_label = cluster_count.iloc[0,0]
     
     anomalies = result_kmeans.loc[result_kmeans["Cluster"] == anomaly_cluster_label]
-
+    st.write('cluster_count: ', cluster_count.shape)
+    st.write('anomaly_cluster_label: ', anomaly_cluster_label)
+    st.write('anomalies: ', anomalies.shape)
 if __name__ == '__main__':
     load()
 
