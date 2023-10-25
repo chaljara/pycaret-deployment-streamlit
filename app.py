@@ -131,15 +131,14 @@ if __name__ == '__main__':
     #Customers
     customers = categories.sort_values(by="CUSTOMER", ascending=True)["CUSTOMER"].unique()
     
-    col1, col2 = st.columns(2)
-
     with col1:
         customerSelected = st.selectbox(
             "Seleccione un cliente: ",
             customers,
             key="selectbox_customers",
-            on_change=lambda new_option: st.write(f"Seleccionaste: {customerSelected}"
+            on_change=lambda new_option: st.write(f"Seleccionaste: {customerSelected}")
         )
+    
     with col2:
         st.checkbox("Disable selectbox widget", key="disabled")
         st.radio(
