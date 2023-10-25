@@ -5,7 +5,6 @@ from pycaret.clustering import *
 from pycaret.anomaly import AnomalyExperiment
 import streamlit as st
 
-data = []
 project_id = 'mcd-proyecto'
 bucket_name = "mcdproyectobucket"
 file_name = "dataset-v5-ofuscated.csv"
@@ -15,6 +14,7 @@ iforest_model_1 = "iforest_model_downtime"
 iforest_model_2 = "iforest_model_downtime_grouped"
 
 #dataframes
+data = []
 categories = []
 data_pivot = []
 data_pivot_no_geo = []
