@@ -130,7 +130,6 @@ if __name__ == '__main__':
     
     #Customers
     customers = categories.sort_values(by="CUSTOMER", ascending=True)["CUSTOMER"].unique()
-    st.selectbox("Cliente: ", customers)
     
     col1, col2 = st.columns(2)
 
