@@ -20,7 +20,8 @@ data_g = []
 categories = []
 data_pivot = []
 data_pivot_no_geo = []
-
+cluster_anomaly = []
+anomalies
 
 @st.cache_data
 def load():
@@ -52,6 +53,8 @@ def evaluate():
     global categories
     global data_pivot
     global data_pivot_no_geo
+    global cluster_anomaly
+    global anomalies
     
     data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
     data['DATETIME'] = pd.to_datetime(data['DATETIME'])
@@ -129,14 +132,17 @@ def evaluate():
     result_kmeans = s_no_geo_downtime.assign_model(kmeans_no_geo_downtime)
     result_iforest = iforest_model.assign_model(iforest_downtime)
     
-    kmeans_labels = result_kmeans["Cluster"].reset_index()
-    iforest_labels = result_iforest.loc[:,["Anomaly", "Anomaly_Score"]].reset_index()
+    #kmeans_labels = result_kmeans["Cluster"].reset_index()
+    #iforest_labels = result_iforest.loc[:,["Anomaly", "Anomaly_Score"]].reset_index()
 
-    merged = pd.merge(kmeans_labels, iforest_labels, on='ID')
-    cluster_anomaly = merged.groupby(["Cluster", "Anomaly"]).count()
+    #merged = pd.merge(kmeans_labels, iforest_labels, on='ID')
+    #cluster_anomaly = merged.groupby(["Cluster", "Anomaly"]).count()       
     
-    return cluster_anomaly
-       
+    #Anomaly label
+    cluster_count = result_kmeans.groupby("Cluster").agg(Count = ("Cluster", "count")).reset_index().sort_values(by="Count", ascending=True).reset_index(drop=True)
+    anomaly_cluster_label = cluster_count.iloc[0,0]
+    
+    anomalies = result_kmeans.loc[result_kmeans["Cluster"] == anomaly_cluster_label]
 
 if __name__ == '__main__':
     load()
@@ -158,7 +164,7 @@ if __name__ == '__main__':
         #on_change=lambda new_option: st.write(f"Seleccionaste: {customerSelected}")
     )
     
-    data_filtered = pd.DataFrame(data_pivot_no_geo.reset_index(), copy=True)
+    data_filtered = pd.DataFrame(anomalies.reset_index(), copy=True)
     data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]#[["ID", "MODEL", "FUNCTION", "FAMILY", "SITE"]]
 
     #data_g.loc[data_g["ID"] == "0000MTA"]["CARD_DOWNTIME"]
