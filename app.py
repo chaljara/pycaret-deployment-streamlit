@@ -20,6 +20,9 @@ data_pivot = []
 data_pivot_no_geo = []
 
 def load():
+    global categories
+    global data_pivot
+    global data_pivot_no_geo
     
     credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
     storage_client = storage.Client(project=project_id, credentials=credentials)
