@@ -154,7 +154,7 @@ if __name__ == '__main__':
         )
         
         data_filtered = pd.DataFrame(data_pivot_no_geo.reset_index(), copy=True)
-        data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected][["ID"]]
+        data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected][["ID", "MODEL", "FUNCTION", "FAMILY", "SITE"]]
 
         st.dataframe(data_filtered, hide_index=True)
         st.write("shape: {data_filtered.shape}")
