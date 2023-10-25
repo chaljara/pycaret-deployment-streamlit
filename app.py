@@ -159,7 +159,7 @@ if __name__ == '__main__':
         )
         
         data_filtered = pd.DataFrame(data_pivot_no_geo.reset_index(), copy=True)
-        data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected][["ID", "MODEL", "FUNCTION", "FAMILY", "SITE"]]
+        data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]#[["ID", "MODEL", "FUNCTION", "FAMILY", "SITE"]]
 
         #data_g.loc[data_g["ID"] == "0000MTA"]["CARD_DOWNTIME"]
         
@@ -169,7 +169,7 @@ if __name__ == '__main__':
             "FUNCTION": data_filtered["FUNCTION"],
             "MODEL": data_filtered["MODEL"],
             "SITE": data_filtered["SITE"], 
-            "CARD_DOWTIME": [[data_pivot_no_geo.loc[data_pivot_no_geo["ID"] == id].melt()[0:12]["value"]] for id in data_filtered["ID"]]
+            "CARD_DOWTIME": [[data_filtered.loc[data_filtered["ID"] == id].melt()[0:12]["value"]] for id in data_filtered["ID"]]
         })
         st.dataframe(data_filtered, hide_index=True, column_config={
                         "ID": "ATM",
