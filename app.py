@@ -21,7 +21,7 @@ categories = []
 data_pivot = []
 data_pivot_no_geo = []
 cluster_anomaly = []
-anomalies
+anomalies = []
 
 @st.cache_data
 def load():
