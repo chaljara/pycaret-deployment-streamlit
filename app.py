@@ -145,8 +145,7 @@ if __name__ == '__main__':
     #Customers
     customers = categories.sort_values(by="CUSTOMER", ascending=True)["CUSTOMER"].unique()
 
-    st.title('Módulo de detección de anomalías')
-    st.divider()
+    st.subheader('Módulo de detección de anomalías', divider='orange')
     
     col1, col2 = st.columns(2)
     
