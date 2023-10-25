@@ -5,6 +5,7 @@ from pycaret.anomaly import AnomalyExperiment
 import streamlit as st
 import pandas as pd
 import numpy as np
+from datetime import datetime
 
 project_id = 'mcd-proyecto'
 bucket_name = "mcdproyectobucket"
@@ -143,17 +144,18 @@ def evaluate():
     anomaly_cluster_label = cluster_count.iloc[0,0]
     
     anomalies = result_kmeans.loc[result_kmeans["Cluster"] == anomaly_cluster_label]
-    st.write('cluster_count: ', cluster_count.shape)
-    st.write('anomaly_cluster_label: ', anomaly_cluster_label)
-    st.write('anomalies: ', anomalies.shape)
+    
+    #st.write('cluster_count: ', cluster_count.shape)
+    #st.write('anomaly_cluster_label: ', anomaly_cluster_label)
+    st.write('datetime_load: ', datetime.now())
 if __name__ == '__main__':
     load()
 
-    result = evaluate()
+    evaluate()
     
     #Customers
-    customers = categories.sort_values(by="CUSTOMER", ascending=True)["CUSTOMER"].unique()
-
+    customers = anomalies.sort_values(by="CUSTOMER", ascending=True)["CUSTOMER"].unique()
+    st.write('datetime_main: ', datetime.now())
     st.subheader('Módulo de detección de anomalías', divider='orange')
     
     #col1, col2 = st.columns(2)
