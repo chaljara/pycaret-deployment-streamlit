@@ -131,7 +131,6 @@ if __name__ == '__main__':
     #Customers
     customers = categories.sort_values(by="CUSTOMER", ascending=True)["CUSTOMER"].unique()
     st.selectbox("Cliente: ", customers)
-    st.write(f"Has seleccionado: {customerSelected}")
     
     col1, col2 = st.columns(2)
 
@@ -154,7 +153,8 @@ if __name__ == '__main__':
     
     if st.session_state.selectbox_customers != customerSelected:
         st.session_state.selectbox_customers = customerSelected
+        
         data_filtered = pd.DataFrame(data_pivot_no_geo.reset_index(), copy=True)
-        data_filtered = data_filtered.loc[data_filtered['CUSTOMER'] == "Customer COL 1"][["ID"]]
+        data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected][["ID"]]
 
         st.write(data_filtered)
