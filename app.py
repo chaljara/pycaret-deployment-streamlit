@@ -143,7 +143,7 @@ if __name__ == '__main__':
     #Customers
     customers = categories.sort_values(by="CUSTOMER", ascending=True)["CUSTOMER"].unique()
 
-    st.title('Módulo de detección de anomalías', divider='orange')
+    st.title('Módulo de detección de anomalías')
     st.divider()
     
     col1, col2 = st.columns(2)
@@ -166,8 +166,8 @@ if __name__ == '__main__':
             "FAMILY": data_filtered["FAMILY"],
             "FUNCTION": data_filtered["FUNCTION"],
             "MODEL": data_filtered["MODEL"],
-            "SITE": data_filtered["SITE"],
-            "CARD_DOWTIME": [0,10,50,100,20],
+            "SITE": data_filtered["SITE"], 
+            "CARD_DOWTIME": [[data_g.loc[data_g["ID"] == id]["CARD_DOWNTIME"]] for id in data_g["ID"]],
     
         })
         st.dataframe(data_filtered, hide_index=True, column_config={
@@ -177,7 +177,7 @@ if __name__ == '__main__':
                         "MODEL": "MODELO",
                         "SITE": "TIPO",
                         "CARD_DOWTIME": st.column_config.LineChartColumn(
-                            "Line chart", y_min=0, y_max=100
+                            "Line chart", y_min=0, y_max=86400
                         ),
                     },)
         st.write("shape: {data_filtered.shape}")
