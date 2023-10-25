@@ -181,12 +181,6 @@ if __name__ == '__main__':
                     },)
         st.write("shape: {data_filtered.shape}")
     with col2:
-        st.checkbox("Disable selectbox widget", key="disabled")
-        st.radio(
-            "Set selectbox label visibility 👉",
-            key="visibility",
-            options=["visible", "hidden", "collapsed"],
-        )
     
     if st.session_state.selectbox_customers != customerSelected:
         st.session_state.selectbox_customers = customerSelected
