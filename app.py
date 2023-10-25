@@ -167,8 +167,7 @@ if __name__ == '__main__':
             "FUNCTION": data_filtered["FUNCTION"],
             "MODEL": data_filtered["MODEL"],
             "SITE": data_filtered["SITE"], 
-            "CARD_DOWTIME": [[data_g.loc[data_g["ID"] == id]["CARD_DOWNTIME"]] for id in data_g["ID"]],
-    
+            "CARD_DOWTIME": [data_pivot_no_geo.loc[data_pivot_no_geo["ID"] == id].melt()[0:12]["value"]] for id in data_filtered["ID"]]
         })
         st.dataframe(data_filtered, hide_index=True, column_config={
                         "ID": "ATM",
