@@ -174,7 +174,7 @@ if __name__ == '__main__':
                         "FAMILY": "FAMILIA",
                         "FUNCTION": "FUNCION",
                         "MODEL": "MODELO",
-                        "SITE": , "TIPO",
+                        "SITE": "TIPO",
                         "CARD_DOWTIME": st.column_config.LineChartColumn(
                             "Line chart", y_min=0, y_max=100
                         ),
