@@ -14,6 +14,11 @@ kmeans_model_2 = "kmeans_model_downtime_grouped"
 iforest_model_1 = "iforest_model_downtime"
 iforest_model_2 = "iforest_model_downtime_grouped"
 
+#dataframes
+categories = []
+data_pivot = []
+data_pivot_no_geo = []
+
 def load():
     
     credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
