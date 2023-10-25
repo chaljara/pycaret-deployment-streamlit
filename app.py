@@ -15,6 +15,7 @@ iforest_model_2 = "iforest_model_downtime_grouped"
 
 #dataframes
 data = []
+data_g = []
 categories = []
 data_pivot = []
 data_pivot_no_geo = []
@@ -44,6 +45,7 @@ def load():
     
 def evaluate():
     global data
+    global data_g
     global categories
     global data_pivot
     global data_pivot_no_geo
@@ -156,7 +158,27 @@ if __name__ == '__main__':
         data_filtered = pd.DataFrame(data_pivot_no_geo.reset_index(), copy=True)
         data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected][["ID", "MODEL", "FUNCTION", "FAMILY", "SITE"]]
 
-        st.dataframe(data_filtered, hide_index=True)
+        #data_g.loc[data_g["ID"] == "0000MTA"]["CARD_DOWNTIME"]
+        
+        data_filtered =  pd.DataFrame({
+            "ID": data_filtered["ID"],
+            "FAMILY": data_filtered["FAMILY"],
+            "FUNCTION": data_filtered["FUNCTION"],
+            "MODEL": data_filtered["MODEL"],
+            "SITE": data_filtered["SITE"],
+            "CARD_DOWTIME": [0,10,50,100,20],
+    
+        })
+        st.dataframe(data_filtered, hide_index=True, column_config={
+                        "ID": "ATM",
+                        "FAMILY": "FAMILIA",
+                        "FUNCTION": "FUNCION",
+                        "MODEL": "MODELO",
+                        "SITE": , "TIPO",
+                        "CARD_DOWTIME": st.column_config.LineChartColumn(
+                            "Line chart", y_min=0, y_max=100
+                        ),
+                    },)
         st.write("shape: {data_filtered.shape}")
     with col2:
         st.checkbox("Disable selectbox widget", key="disabled")
