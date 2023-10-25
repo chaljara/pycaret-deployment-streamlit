@@ -169,12 +169,12 @@ if __name__ == '__main__':
         "FUNCTION": data_filtered["FUNCTION"],
         "MODEL": data_filtered["MODEL"],
         "SITE": data_filtered["SITE"], 
-        "CARD_DOWTIME": [[data_filtered.loc[data_filtered["ID"] == id].melt()[1:13][["value"]]] for id in data_filtered["ID"]],
-        "CASH_DOWTIME": [[data_filtered.loc[data_filtered["ID"] == id].melt()[13:25][["value"]]] for id in data_filtered["ID"]],
-        "ACCEPTOR_DOWTIME": [[data_filtered.loc[data_filtered["ID"] == id].melt()[25:37][["value"]]] for id in data_filtered["ID"]],
-        "DEPOSITOR_DOWTIME": [[data_filtered.loc[data_filtered["ID"] == id].melt()[37:49][["value"]]] for id in data_filtered["ID"]],
-        "EPP_DOWTIME": [[data_filtered.loc[data_filtered["ID"] == id].melt()[49:61][["value"]]] for id in data_filtered["ID"]],
-        "PRINTER_DOWTIME": [[data_filtered.loc[data_filtered["ID"] == id].melt()[61:73][["value"]]] for id in data_filtered["ID"]],
+        "CARD_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[1:13]["value"]) for id in data_filtered["ID"]],
+        "CASH_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[13:25][["value"]) for id in data_filtered["ID"]],
+        "ACCEPTOR_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[25:37][["value"]) for id in data_filtered["ID"]],
+        "DEPOSITOR_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[37:49][["value"]) for id in data_filtered["ID"]],
+        "EPP_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[49:61][["value"]) for id in data_filtered["ID"]],
+        "PRINTER_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[61:73][["value"]) for id in data_filtered["ID"]],
     })
     st.dataframe(data_filtered, hide_index=True, column_config={
                     "ID": "ATM",
