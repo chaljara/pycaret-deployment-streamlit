@@ -181,6 +181,7 @@ if __name__ == '__main__':
                     },)
         st.write("shape: {data_filtered.shape}")
     with col2:
-    
+        None
+        
     if st.session_state.selectbox_customers != customerSelected:
         st.session_state.selectbox_customers = customerSelected
