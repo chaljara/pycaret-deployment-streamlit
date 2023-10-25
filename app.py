@@ -168,7 +168,7 @@ if __name__ == '__main__':
             "FUNCTION": data_filtered["FUNCTION"],
             "MODEL": data_filtered["MODEL"],
             "SITE": data_filtered["SITE"], 
-            "CARD_DOWTIME": [[data_filtered.loc[data_filtered["ID"] == id].melt()[1:13]["value"]] for id in data_filtered["ID"]]
+            "CARD_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[1:13]["value"]) for id in data_filtered["ID"]]
         })
         st.dataframe(data_filtered, hide_index=True, column_config={
                         "ID": "ATM",
