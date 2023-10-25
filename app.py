@@ -20,6 +20,7 @@ data_pivot = []
 data_pivot_no_geo = []
 
 def load():
+    global data
     global categories
     global data_pivot
     global data_pivot_no_geo
