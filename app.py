@@ -141,8 +141,6 @@ if __name__ == '__main__':
             key="selectbox_customers",
             on_change=lambda new_option: st.write(f"Seleccionaste: {customerSelected}"
         )
-        
-    
     with col2:
         st.checkbox("Disable selectbox widget", key="disabled")
         st.radio(
