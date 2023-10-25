@@ -20,6 +20,8 @@ categories = []
 data_pivot = []
 data_pivot_no_geo = []
 
+
+@st.cache_data
 def load():
     
     credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
