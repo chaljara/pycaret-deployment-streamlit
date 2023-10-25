@@ -148,42 +148,47 @@ if __name__ == '__main__':
 
     st.subheader('Módulo de detección de anomalías', divider='orange')
     
-    col1, col2 = st.columns(2)
+    #col1, col2 = st.columns(2)
     
-    with col1:
-        customerSelected = st.selectbox(
-            "Seleccione un cliente: ",
-            customers,
-            key="selectbox_customers"#,
-            #on_change=lambda new_option: st.write(f"Seleccionaste: {customerSelected}")
-        )
-        
-        data_filtered = pd.DataFrame(data_pivot_no_geo.reset_index(), copy=True)
-        data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]#[["ID", "MODEL", "FUNCTION", "FAMILY", "SITE"]]
+    #with col1:
+    customerSelected = st.selectbox(
+        "Seleccione un cliente: ",
+        customers,
+        key="selectbox_customers"#,
+        #on_change=lambda new_option: st.write(f"Seleccionaste: {customerSelected}")
+    )
+    
+    data_filtered = pd.DataFrame(data_pivot_no_geo.reset_index(), copy=True)
+    data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]#[["ID", "MODEL", "FUNCTION", "FAMILY", "SITE"]]
 
-        #data_g.loc[data_g["ID"] == "0000MTA"]["CARD_DOWNTIME"]
-        
-        data_filtered =  pd.DataFrame({
-            "ID": data_filtered["ID"],
-            "FAMILY": data_filtered["FAMILY"],
-            "FUNCTION": data_filtered["FUNCTION"],
-            "MODEL": data_filtered["MODEL"],
-            "SITE": data_filtered["SITE"], 
-            "CARD_DOWTIME": [[data_filtered.loc[data_filtered["ID"] == id].melt()[1:13][["value"]]] for id in data_filtered["ID"]]
-        })
-        st.dataframe(data_filtered, hide_index=True, column_config={
-                        "ID": "ATM",
-                        "FAMILY": "FAMILIA",
-                        "FUNCTION": "FUNCION",
-                        "MODEL": "MODELO",
-                        "SITE": "TIPO",
-                        "CARD_DOWTIME": st.column_config.LineChartColumn(
-                            "Line chart", y_min=0, y_max=86400
-                        ),
-                    },)
-        st.write("shape: {data_filtered.shape}")
-    with col2:
-        None
+    #data_g.loc[data_g["ID"] == "0000MTA"]["CARD_DOWNTIME"]
+    
+    data_filtered =  pd.DataFrame({
+        "ID": data_filtered["ID"],
+        "FAMILY": data_filtered["FAMILY"],
+        "FUNCTION": data_filtered["FUNCTION"],
+        "MODEL": data_filtered["MODEL"],
+        "SITE": data_filtered["SITE"], 
+        "CARD_DOWTIME": [[data_filtered.loc[data_filtered["ID"] == id].melt()[1:13][["value"]]] for id in data_filtered["ID"]],
+        "CASH_DOWTIME": [[data_filtered.loc[data_filtered["ID"] == id].melt()[13:25][["value"]]] for id in data_filtered["ID"]],
+        "ACCEPTOR_DOWTIME": [[data_filtered.loc[data_filtered["ID"] == id].melt()[25:37][["value"]]] for id in data_filtered["ID"]],
+        "DEPOSITOR_DOWTIME": [[data_filtered.loc[data_filtered["ID"] == id].melt()[37:49][["value"]]] for id in data_filtered["ID"]],
+        "EPP_DOWTIME": [[data_filtered.loc[data_filtered["ID"] == id].melt()[49:61][["value"]]] for id in data_filtered["ID"]],
+        "PRINTER_DOWTIME": [[data_filtered.loc[data_filtered["ID"] == id].melt()[61:73][["value"]]] for id in data_filtered["ID"]],
+    })
+    st.dataframe(data_filtered, hide_index=True, column_config={
+                    "ID": "ATM",
+                    "FAMILY": "FAMILIA",
+                    "FUNCTION": "FUNCION",
+                    "MODEL": "MODELO",
+                    "SITE": "TIPO",
+                    "CARD_DOWTIME": st.column_config.LineChartColumn("LECTURA", y_min=0, y_max=86400),
+                    "CASH_DOWTIME": st.column_config.LineChartColumn("DISPENSADOR", y_min=0, y_max=86400),
+                    "ACCEPTOR_DOWTIME": st.column_config.LineChartColumn("ACEPTADOR", y_min=0, y_max=86400),
+                    "DEPOSITOR_DOWTIME": st.column_config.LineChartColumn("CHEQUE", y_min=0, y_max=86400),
+                    "EPP_DOWTIME": st.column_config.LineChartColumn("TECLADO ELECTR", y_min=0, y_max=86400),
+                    "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA", y_min=0, y_max=86400),
+                },)
         
     if st.session_state.selectbox_customers != customerSelected:
         st.session_state.selectbox_customers = customerSelected
