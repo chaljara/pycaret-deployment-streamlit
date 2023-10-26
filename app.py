@@ -187,7 +187,7 @@ if __name__ == '__main__':
         "PRINTER_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[61:73]["value"]) for id in data_filtered["ID"]],
     })
 
-    col1, col2 = st.beta_columns(2)
+    col1, col2 = st.columns(2)
 
     # Display DataFrame in the first column
     with col1:
