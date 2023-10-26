@@ -115,6 +115,7 @@ def evaluate():
                             normalize = True,
                             ignore_features=["ID"],
                             ordinal_features=None,
+                            session_id = 3,
                             categorical_features=["CUSTOMER", "MODEL", "FUNCTION", "FAMILY", "SITE", "COUNTRY"])
     
     #s_no_geo_downtime_grouped.setup(data_pivot_no_geo,
@@ -122,6 +123,7 @@ def evaluate():
     #                                group_features = columnsByDevice,
     #                                ignore_features=["ID"],
     #                                ordinal_features=None,
+    #                                session_id = 5,
     #                                categorical_features=["CUSTOMER", "MODEL", "FUNCTION", "FAMILY", "SITE", "COUNTRY"])
 
     iforest_model.setup(data_pivot_no_geo, session_id = 123, ignore_features=["ID"])
@@ -184,7 +186,7 @@ if __name__ == '__main__':
         "EPP_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[49:61]["value"]) for id in data_filtered["ID"]],
         "PRINTER_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[61:73]["value"]) for id in data_filtered["ID"]],
     })
-    st.dataframe(data_filtered, hide_index=True, use_container_width=True, column_config={
+    st.dataframe(data_filtered, hide_index=True, width=1200, height=1000, column_config={
                     "ID": "ATM",
                     "FAMILY": "FAMILIA",
                     "FUNCTION": "FUNCION",
