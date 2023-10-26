@@ -147,7 +147,6 @@ def evaluate():
     
     #st.write('cluster_count: ', cluster_count.shape)
     #st.write('anomaly_cluster_label: ', anomaly_cluster_label)
-    st.write('datetime_load: ', datetime.now())
 if __name__ == '__main__':
     load()
 
@@ -155,7 +154,6 @@ if __name__ == '__main__':
     
     #Customers
     customers = anomalies.sort_values(by="CUSTOMER", ascending=True)["CUSTOMER"].unique()
-    st.write('datetime_main: ', datetime.now())
     st.subheader('Módulo de detección de anomalías', divider='orange')
     
     #col1, col2 = st.columns(2)
@@ -186,7 +184,7 @@ if __name__ == '__main__':
         "EPP_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[49:61]["value"]) for id in data_filtered["ID"]],
         "PRINTER_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[61:73]["value"]) for id in data_filtered["ID"]],
     })
-    st.dataframe(data_filtered, hide_index=True, column_config={
+    st.dataframe(data_filtered, hide_index=True, use_container_width=True, column_config={
                     "ID": "ATM",
                     "FAMILY": "FAMILIA",
                     "FUNCTION": "FUNCION",
@@ -198,7 +196,7 @@ if __name__ == '__main__':
                     "DEPOSITOR_DOWTIME": st.column_config.LineChartColumn("CHEQUE", y_min=0, y_max=86400),
                     "EPP_DOWTIME": st.column_config.LineChartColumn("TECLADO ELECTR", y_min=0, y_max=86400),
                     "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA", y_min=0, y_max=86400),
-                },)
+                })
         
     if st.session_state.selectbox_customers != customerSelected:
         st.session_state.selectbox_customers = customerSelected
