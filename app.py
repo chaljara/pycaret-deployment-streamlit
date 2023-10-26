@@ -186,12 +186,22 @@ if __name__ == '__main__':
         "EPP_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[49:61]["value"]) for id in data_filtered["ID"]],
         "PRINTER_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[61:73]["value"]) for id in data_filtered["ID"]],
     })
-    st.dataframe(data_filtered, hide_index=True, width=1200, height=1000, column_config={
+
+    col1, col2 = st.beta_columns(2)
+
+    # Display DataFrame in the first column
+    with col1:
+        st.dataframe(data_filtered, hide_index=True, column_config={
                     "ID": "ATM",
                     "FAMILY": "FAMILIA",
                     "FUNCTION": "FUNCION",
                     "MODEL": "MODELO",
-                    "SITE": "TIPO",
+                    "SITE": "TIPO"
+                })
+    
+    # Display DataFrame in the second column
+    with col2:
+        st.dataframe(data_filtered, hide_index=True, column_config={
                     "CARD_DOWTIME": st.column_config.LineChartColumn("LECTURA", y_min=0, y_max=86400),
                     "CASH_DOWTIME": st.column_config.LineChartColumn("DISPENSADOR", y_min=0, y_max=86400),
                     "ACCEPTOR_DOWTIME": st.column_config.LineChartColumn("ACEPTADOR", y_min=0, y_max=86400),
@@ -199,6 +209,8 @@ if __name__ == '__main__':
                     "EPP_DOWTIME": st.column_config.LineChartColumn("TECLADO", y_min=0, y_max=86400),
                     "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA", y_min=0, y_max=86400),
                 })
+
+    
         
     if st.session_state.selectbox_customers != customerSelected:
         st.session_state.selectbox_customers = customerSelected
