@@ -143,7 +143,7 @@ def evaluate():
     
     st.write("iforest elements: ", iforest_anom_count)
     
-    merged = pd.merge(result_kmeans, iforest_labels, on='ID')
+    merged = pd.merge(kmeans_labels, iforest_labels, on='ID')
 
     st.dataframe(merged.groupby(["Cluster", "Anomaly"]).count())
     
