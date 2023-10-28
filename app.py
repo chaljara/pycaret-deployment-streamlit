@@ -136,13 +136,18 @@ def evaluate():
     st.write("Kmeans label: ", anomaly_cluster_label)
     st.write("Kmeans elements: ", cluster_anomalies.shape)
     
-    #kmeans_labels = result_kmeans["Cluster"].reset_index()
-    iforest_labels = result_iforest.loc[:,["Anomaly", "Anomaly_Score"]].reset_index()
-    iforest_anom_count = iforest_labels.loc[iforest_labels["Anomaly"] == 1].shape
+    kmeans_labels = result_kmeans["Cluster"].reset_index()
+    #iforest_labels = result_iforest.loc[:,["Anomaly", "Anomaly_Score"]].reset_index()
+    #iforest_anom_count = iforest_labels.loc[iforest_labels["Anomaly"] == 1].shape
+    st.dataframe(result_iforest.groupby("Anomaly").count().reset_index())
     st.write("iforest elements: ", iforest_anom_count)
-    merged = pd.merge(cluster_anomalies, iforest_labels, on='ID')
+    
+    merged = pd.merge(kmeans_labels, iforest_labels, on='ID')
+    
     st.write("merged elements: ", merged.shape)
-    merged = merged.loc[merged["Anomaly"] == 1].reset_index(drop=True)
+    merged = merged.loc[(merged["Cluster"] == anomaly_cluster_label) & (merged["Anomaly"] == 1)]
+    st.write("merged elements 2: ", merged.shape)
+    merged = merged.reset_index(drop=True)
 
 if __name__ == '__main__':
     load()
