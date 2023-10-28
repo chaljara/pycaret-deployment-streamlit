@@ -142,9 +142,10 @@ def evaluate():
     
     #st.write("iforest elements: ", iforest_anom_count)
     
-    merged = pd.merge(kmeans_labels, iforest_labels, on='ID')
+    merged = pd.merge(result_kmeans, result_iforest, on='ID')
     
     st.write("merged elements: ", merged.shape)
+    
     merged = merged.loc[(merged["Cluster"] == anomaly_cluster_label) & (merged["Anomaly"] == 1)]
     st.dataframe(merged)
     
