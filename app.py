@@ -107,31 +107,21 @@ def evaluate():
     iforest_downtime = load_model(model_name=iforest_model_1, platform="gcp", authentication=auth)
     iforest_downtime_grouped = load_model(iforest_model_2, platform="gcp", authentication=auth)
     
-    s_no_geo_downtime = ClusteringExperiment()
-    s_no_geo_downtime_grouped = ClusteringExperiment()
+    kmeans_model = ClusteringExperiment()
     
     iforest_model = AnomalyExperiment()
     iforest_model_grouped = AnomalyExperiment()
 
-    s_no_geo_downtime.setup(data_pivot_no_geo,
+    kmeans_model.setup(data_pivot_no_geo,
                             normalize = True,
                             ignore_features=["ID"],
                             ordinal_features=None,
                             session_id = 3,
                             categorical_features=["CUSTOMER", "MODEL", "FUNCTION", "FAMILY", "SITE", "COUNTRY"])
     
-    #s_no_geo_downtime_grouped.setup(data_pivot_no_geo,
-    #                                normalize = True,
-    #                                group_features = columnsByDevice,
-    #                                ignore_features=["ID"],
-    #                                ordinal_features=None,
-    #                                session_id = 5,
-    #                                categorical_features=["CUSTOMER", "MODEL", "FUNCTION", "FAMILY", "SITE", "COUNTRY"])
-
     iforest_model.setup(data_pivot_no_geo, session_id = 123, ignore_features=["ID"])
-    #iforest_model_grouped.setup(data_pivot_no_geo, session_id = 124, group_features=columnsByDevice, ignore_features=["ID"])
     
-    s_no_geo_downtime.evaluate_model(kmeans_no_geo_downtime)
+    kmeans_model.evaluate_model(kmeans_no_geo_downtime)
     iforest_model.evaluate_model(iforest_downtime)
     
     result_kmeans = s_no_geo_downtime.assign_model(kmeans_no_geo_downtime)
@@ -142,10 +132,14 @@ def evaluate():
     anomaly_cluster_label = cluster_count.iloc[0,0]
     
     cluster_anomalies = result_kmeans.loc[result_kmeans["Cluster"] == anomaly_cluster_label]
+
+    st.write("Cluster label: ", anomaly_cluster_label)
+    st.write("Cluster elements: ", cluster_anomalies.shape)
     
     #kmeans_labels = result_kmeans["Cluster"].reset_index()
     iforest_labels = result_iforest.loc[:,["Anomaly", "Anomaly_Score"]].reset_index()
-
+    iforest_anom_count = iforest_labels.loc[iforest_labels["Anomaly"] == 1].shape
+    st.write("iforest elements: ", iforest_anom_count)
     merged = pd.merge(cluster_anomalies, iforest_labels, on='ID')
     
     merged = merged.loc[merged["Anomaly"] == 1].reset_index(drop=True)
