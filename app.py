@@ -131,8 +131,8 @@ def evaluate():
     cluster_count = result_kmeans.groupby("Cluster").agg(Count = ("Cluster", "count")).reset_index().sort_values(by="Count", ascending=True).reset_index(drop=True)
     anomaly_cluster_label = cluster_count.iloc[0,0]
     
-    cluster_anomalies = result_kmeans.loc[result_kmeans["Cluster"] == anomaly_cluster_label]
-
+    cluster_anomalies = result_kmeans.loc[result_kmeans["Cluster"] == anomaly_cluster_label].reset_index()
+    st.dataframe(result_kmeans.groupby("Cluster").agg(Count = ("Cluster", "count")).reset_index())
     st.write("Kmeans label: ", anomaly_cluster_label)
     st.write("Kmeans elements: ", cluster_anomalies.shape)
     
