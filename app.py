@@ -124,7 +124,7 @@ def evaluate():
     kmeans_model.evaluate_model(kmeans_no_geo_downtime)
     iforest_model.evaluate_model(iforest_downtime)
     
-    result_kmeans = s_no_geo_downtime.assign_model(kmeans_no_geo_downtime)
+    result_kmeans = kmeans_model.assign_model(kmeans_no_geo_downtime)
     result_iforest = iforest_model.assign_model(iforest_downtime)
 
     #Anomaly label
