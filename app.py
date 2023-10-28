@@ -175,7 +175,7 @@ if __name__ == '__main__':
         #on_change=lambda new_option: st.write(f"Seleccionaste: {customerSelected}")
     )
     
-    data_filtered = pd.DataFrame(data_pivot_no_geo, copy=True)
+    data_filtered = pd.DataFrame(merged, copy=True)
     data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]#[["ID", "MODEL", "FUNCTION", "FAMILY", "SITE"]]
 
     #data_g.loc[data_g["ID"] == "0000MTA"]["CARD_DOWNTIME"]
