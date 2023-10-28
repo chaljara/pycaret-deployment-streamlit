@@ -131,7 +131,8 @@ def evaluate():
     cluster_count = result_kmeans.groupby("Cluster").agg(Count = ("Cluster", "count")).reset_index().sort_values(by="Count", ascending=True).reset_index(drop=True)
     anomaly_cluster_label = cluster_count.iloc[0,0]
     
-    cluster_anomalies = result_kmeans.loc[result_kmeans["Cluster"] == anomaly_cluster_label].reset_index()
+    #cluster_anomalies = result_kmeans.loc[result_kmeans["Cluster"] == anomaly_cluster_label].reset_index()
+    cluster_anomalies = result_kmeans.reset_index()
     st.dataframe(result_kmeans.groupby("Cluster").agg(Count = ("Cluster", "count")).reset_index())
     
     st.write("Kmeans label: ", anomaly_cluster_label)
@@ -143,7 +144,7 @@ def evaluate():
     
     #st.write("iforest elements: ", iforest_anom_count)
     
-    merged = pd.merge(kmeans_labels, iforest_labels, on='ID')
+    merged = pd.merge(cluster_anomalies, iforest_labels, on='ID')
 
     st.dataframe(merged.groupby(["Cluster", "Anomaly"]).count().reset_index())
     
