@@ -149,7 +149,7 @@ def evaluate():
     
     st.write("merged elements: ", merged.shape)
     
-    merged = merged.loc[(merged["Anomaly"] == 1]
+    merged = merged.loc[merged["Anomaly"] == 1]
     
     st.dataframe(merged)
     
