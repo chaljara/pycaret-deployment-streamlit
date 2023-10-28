@@ -134,21 +134,20 @@ def evaluate():
     
     result_kmeans = s_no_geo_downtime.assign_model(kmeans_no_geo_downtime)
     result_iforest = iforest_model.assign_model(iforest_downtime)
-    
-    #kmeans_labels = result_kmeans["Cluster"].reset_index()
-    #iforest_labels = result_iforest.loc[:,["Anomaly", "Anomaly_Score"]].reset_index()
 
-    #merged = pd.merge(kmeans_labels, iforest_labels, on='ID')
-    #cluster_anomaly = merged.groupby(["Cluster", "Anomaly"]).count()       
-    
     #Anomaly label
     cluster_count = result_kmeans.groupby("Cluster").agg(Count = ("Cluster", "count")).reset_index().sort_values(by="Count", ascending=True).reset_index(drop=True)
     anomaly_cluster_label = cluster_count.iloc[0,0]
     
-    anomalies = result_kmeans.loc[result_kmeans["Cluster"] == anomaly_cluster_label]
+    cluster_anomalies = result_kmeans.loc[result_kmeans["Cluster"] == anomaly_cluster_label]
     
-    #st.write('cluster_count: ', cluster_count.shape)
-    #st.write('anomaly_cluster_label: ', anomaly_cluster_label)
+    #kmeans_labels = result_kmeans["Cluster"].reset_index()
+    iforest_labels = result_iforest.loc[:,["Anomaly", "Anomaly_Score"]].reset_index()
+
+    merged = pd.merge(cluster_anomalies, iforest_labels, on='ID')
+    
+    merged = merged.loc[merged["Anomaly"] == 1].reset_index(drop=True)
+
 if __name__ == '__main__':
     load()
 
