@@ -23,6 +23,7 @@ data_pivot = []
 data_pivot_no_geo = []
 cluster_anomaly = []
 anomalies = []
+merged = []
 
 @st.cache_data
 def load():
@@ -56,6 +57,7 @@ def evaluate():
     global data_pivot_no_geo
     global cluster_anomaly
     global anomalies
+    global merged
     
     data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
     data['DATETIME'] = pd.to_datetime(data['DATETIME'])
@@ -154,7 +156,7 @@ if __name__ == '__main__':
     evaluate()
     
     #Customers
-    customers = anomalies.sort_values(by="CUSTOMER", ascending=True)["CUSTOMER"].unique()
+    customers = data_pivot_no_geo.sort_values(by="CUSTOMER", ascending=True)["CUSTOMER"].unique()
     st.subheader('Módulo de detección de anomalías', divider='orange')
     
     #col1, col2 = st.columns(2)
