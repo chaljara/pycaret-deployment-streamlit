@@ -141,7 +141,7 @@ def evaluate():
     iforest_labels = result_iforest.loc[:,["Anomaly", "Anomaly_Score"]].reset_index()
     #iforest_anom_count = iforest_labels.loc[iforest_labels["Anomaly"] == 1].shape
     
-    st.write("iforest elements: ", iforest_anom_count)
+    #st.write("iforest elements: ", iforest_anom_count)
     
     merged = pd.merge(kmeans_labels, iforest_labels, on='ID')
 
