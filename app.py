@@ -139,15 +139,18 @@ def evaluate():
     kmeans_labels = result_kmeans["Cluster"].reset_index()
     #iforest_labels = result_iforest.loc[:,["Anomaly", "Anomaly_Score"]].reset_index()
     #iforest_anom_count = iforest_labels.loc[iforest_labels["Anomaly"] == 1].shape
-    st.dataframe(result_iforest.groupby("Anomaly").count().reset_index())
-    st.write("iforest elements: ", iforest_anom_count)
+    
+    #st.write("iforest elements: ", iforest_anom_count)
     
     merged = pd.merge(kmeans_labels, iforest_labels, on='ID')
     
     st.write("merged elements: ", merged.shape)
     merged = merged.loc[(merged["Cluster"] == anomaly_cluster_label) & (merged["Anomaly"] == 1)]
-    st.write("merged elements 2: ", merged.shape)
+    st.dataframe(merged)
+    
     merged = merged.reset_index(drop=True)
+
+
 
 if __name__ == '__main__':
     load()
