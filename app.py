@@ -152,7 +152,7 @@ def evaluate():
     
     merged = merged.loc[merged["Anomaly"] == 1]
     
-    st.dataframe(merged)
+    st.dataframe(merged.groupby(["CUSTOMER", "Cluster", "Anomaly"]).count().reset_index())
     
     merged = merged.reset_index(drop=True)
 
