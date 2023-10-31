@@ -9,7 +9,7 @@ from datetime import datetime
 
 project_id = 'mcd-proyecto'
 bucket_name = "mcdproyectobucket"
-file_name = "dataset-v5-ofuscated.csv"
+file_name = "dataset-v6-ofuscated.csv"
 kmeans_model_1 = "kmeans_model_downtime"
 kmeans_model_2 = "kmeans_model_downtime_grouped"
 iforest_model_1 = "iforest_model_downtime"
