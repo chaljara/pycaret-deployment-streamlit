@@ -9,11 +9,8 @@ from datetime import datetime
 
 project_id = 'mcd-proyecto'
 bucket_name = "mcdproyectobucket"
-file_name = "dataset-v6-ofuscated.csv"
-kmeans_model_1 = "kmeans_model_downtime"
-kmeans_model_2 = "kmeans_model_downtime_grouped"
+file_name = "dataset-v6-testweek35-ofuscated.csv"
 iforest_model_1 = "iforest_model_downtime"
-iforest_model_2 = "iforest_model_downtime_grouped"
 
 #dataframes
 data = []
@@ -36,18 +33,7 @@ def load():
     
     blob = bucket.blob(file_name)
     dataset_filename = "dataset.csv"
-    
     blob.download_to_filename(dataset_filename)
-    
-    blob2 = bucket.blob(kmeans_model_1 + ".pkl")
-    kmeans1_filename = kmeans_model_1 + ".pkl"
-    blob2.download_to_filename(kmeans1_filename)
-    
-    blob3 = bucket.blob(kmeans_model_2 + ".pkl")
-    kmeans2_filename = kmeans_model_2 + ".pkl"
-    blob3.download_to_filename(kmeans2_filename)
-
-
     
 def evaluate():
     global data
@@ -79,6 +65,17 @@ def evaluate():
                 PRINTER_DOWNTIME = ("PRINTER_DOWNTIME", "mean")
              ).reset_index()
 
+    week=35
+    data_g_c = pd.DataFrame(data_g, copy=True)
+    
+    for i in range(week+1, week+12):
+      data_g_b = pd.DataFrame(data_g, copy=True)
+      data_g_b["WEEK"] = i
+      data_g_c = data_g_c.append(data_g_b).reset_index(drop=True)
+      print(data_g_b.shape, data_g_c.shape)
+    
+    data_g = pd.DataFrame(data_g_c, copy=True)
+
     data_pivot = data_g.pivot_table(index='ID', columns='WEEK', values=["CARD_DOWNTIME", "CASH_DOWNTIME", "ACCEPTOR_DOWNTIME", "DEPOSITOR_DOWNTIME", "EPP_DOWNTIME", "PRINTER_DOWNTIME"], aggfunc='mean') #
     data_pivot.columns = [f'W{i}' for i in range(data_pivot.columns.size)]
     data_pivot_week_columns = data_pivot.columns
@@ -102,59 +99,19 @@ def evaluate():
         columnsByDevice[key] = chunk
     
     auth = {"project": project_id, "bucket": bucket_name}
-    kmeans_no_geo_downtime = load_model(model_name=kmeans_model_1, platform="gcp", authentication=auth)
-    kmeans_no_geo_downtime_grouped = load_model(model_name=kmeans_model_2, platform="gcp", authentication=auth)
-    iforest_downtime = load_model(model_name=iforest_model_1, platform="gcp", authentication=auth)
-    iforest_downtime_grouped = load_model(iforest_model_2, platform="gcp", authentication=auth)
+    iforest_model = load_model(model_name=iforest_model_1, platform="gcp", authentication=auth)
     
-    kmeans_model = ClusteringExperiment()
-    
-    iforest_model = AnomalyExperiment()
-    iforest_model_grouped = AnomalyExperiment()
+    iforest_setup = AnomalyExperiment()
+    result_iforest = iforest_setup.predict_model(iforest_model, data=data_pivot_no_geo)
 
-    kmeans_model.setup(data_pivot_no_geo,
-                            normalize = True,
-                            ignore_features=["ID"],
-                            ordinal_features=None,
-                            session_id = 3,
-                            categorical_features=["CUSTOMER", "MODEL", "FUNCTION", "FAMILY", "SITE", "COUNTRY"])
+    no_anomalies = result_iforest[result_iforest["Anomaly"] == 0]
+    anomalies = result_iforest[result_iforest["Anomaly"] == 1]
     
-    iforest_model.setup(data_pivot_no_geo, session_id = 123, ignore_features=["ID"])
+    st.write("no_anomalies: ", no_anomalies.shape)
+    st.write("anomalies: ", anomalies.shape)
+    st.dataframe(anomalies)
     
-    kmeans_model.evaluate_model(kmeans_no_geo_downtime)
-    iforest_model.evaluate_model(iforest_downtime)
-    
-    result_kmeans = kmeans_model.assign_model(kmeans_no_geo_downtime)
-    result_iforest = iforest_model.assign_model(iforest_downtime)
-
-    #Anomaly label
-    cluster_count = result_kmeans.groupby("Cluster").agg(Count = ("Cluster", "count")).reset_index().sort_values(by="Count", ascending=True).reset_index(drop=True)
-    anomaly_cluster_label = cluster_count.iloc[0,0]
-    
-    #cluster_anomalies = result_kmeans.loc[result_kmeans["Cluster"] == anomaly_cluster_label].reset_index()
-    cluster_anomalies = result_kmeans.reset_index()
-    st.dataframe(result_kmeans.groupby("Cluster").agg(Count = ("Cluster", "count")).reset_index())
-    
-    st.write("Kmeans label: ", anomaly_cluster_label)
-    st.write("Kmeans elements: ", cluster_anomalies.shape)
-    
-    kmeans_labels = result_kmeans["Cluster"].reset_index()
-    iforest_labels = result_iforest.loc[:,["Anomaly", "Anomaly_Score"]].reset_index()
-    #iforest_anom_count = iforest_labels.loc[iforest_labels["Anomaly"] == 1].shape
-    
-    #st.write("iforest elements: ", iforest_anom_count)
-    
-    merged = pd.merge(cluster_anomalies, iforest_labels, on='ID')
-
-    st.dataframe(merged.groupby(["Cluster", "Anomaly"]).count().reset_index())
-    
-    st.write("merged elements: ", merged.shape)
-    
-    merged = merged.loc[merged["Anomaly"] == 1]
-    
-    st.dataframe(merged.groupby(["CUSTOMER", "Cluster", "Anomaly"]).count().reset_index())
-    
-    merged = merged.reset_index(drop=True)
+    merged = anomalies.reset_index(drop=True)
 
 if __name__ == '__main__':
     load()
