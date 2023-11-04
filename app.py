@@ -111,6 +111,7 @@ def evaluate():
     st.write("anomalies: ", anomalies.shape)
     st.dataframe(data_g_c.groupby("WEEK").agg(COUNT = ("WEEK", "count")).reset_index())
     st.dataframe(result_iforest.groupby("Anomaly").count())
+    st.dataframe(result_iforest.groupby(["CUSTOMER","Anomaly"]).count())
     merged = anomalies.reset_index()
 
 if __name__ == '__main__':
