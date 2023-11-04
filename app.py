@@ -111,7 +111,7 @@ def evaluate():
     st.write("anomalies: ", anomalies.shape)
     st.dataframe(anomalies)
     
-    merged = anomalies.reset_index(drop=True)
+    merged = anomalies.reset_index()
 
 if __name__ == '__main__':
     load()
