@@ -76,7 +76,7 @@ def evaluate():
     
     data_g = pd.DataFrame(data_g_c, copy=True)
 
-    data_pivot = data_g.pivot_table(index='ID', columns='WEEK', values=["CARD_DOWNTIME", "CASH_DOWNTIME", "ACCEPTOR_DOWNTIME", "DEPOSITOR_DOWNTIME", "EPP_DOWNTIME", "PRINTER_DOWNTIME"], aggfunc='mean') #
+    data_pivot = data_g.pivot_table(index='ID', columns='WEEK', values=["CARD_DOWNTIME", "CASH_DOWNTIME", "ACCEPTOR_DOWNTIME", "DEPOSITOR_DOWNTIME", "EPP_DOWNTIME", "PRINTER_DOWNTIME"], aggfunc='mean', sort=False)
     data_pivot.columns = [f'W{i}' for i in range(data_pivot.columns.size)]
     data_pivot_week_columns = data_pivot.columns
     
@@ -109,8 +109,8 @@ def evaluate():
     
     st.write("no_anomalies: ", no_anomalies.shape)
     st.write("anomalies: ", anomalies.shape)
-    st.dataframe(anomalies)
-    
+    st.dataframe(data_g_c.groupby("WEEK").agg(COUNT = ("W0", "count")).reset_index())
+    st.dataframe(result_iforest.groupby("Anomaly").count())
     merged = anomalies.reset_index()
 
 if __name__ == '__main__':
