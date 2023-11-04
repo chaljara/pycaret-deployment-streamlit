@@ -6,6 +6,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from datetime import datetime
+import plotly.graph_objects as go
+import plotly.colors as pc
 
 project_id = 'mcd-proyecto'
 bucket_name = "mcdproyectobucket"
@@ -168,6 +170,38 @@ if __name__ == '__main__':
                     "EPP_DOWTIME": st.column_config.LineChartColumn("TECLADO", y_min=0, y_max=86400),
                     "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA", y_min=0, y_max=86400),
                 })
-        
+
+    df1 = anomalies.groupby(['FAMILY', 'FUNCTION'])['W0'].count().reset_index()
+    df1.columns = ['source', 'target', 'value']
+    
+    df2 = anomalies.groupby(['FUNCTION', 'SITE'])['W0'].count().reset_index()
+    df2.columns = ['source', 'target', 'value']
+    
+    df3 = anomalies.groupby(['SITE', 'MODEL'])['W0'].count().reset_index()
+    df3.columns = ['source', 'target', 'value']
+    links = pd.concat([df1, df2, df3], axis=0)
+    unique_source_target = list(pd.unique(links[['source', 'target']].values.ravel('K')))
+    mapping_dict = {k: v for v, k in enumerate(unique_source_target)}
+    links['source'] = links['source'].map(mapping_dict)
+    links['target'] = links['target'].map(mapping_dict)
+    links_dict = links.to_dict(orient='list')
+    
+    fig = go.Figure(data=[go.Sankey(
+        node = dict(
+          pad = 8,
+          thickness = 10,
+          #line = dict(color = "orange", width = 0.5),
+          label = unique_source_target,
+          color = "darkred"
+        ),
+        link = dict(
+          source = links_dict["source"],
+          target = links_dict["target"],
+          value = links_dict["value"],
+          color = "darkgray"
+      ))])
+    fig.update_layout(title_text="Detalle Jerárquico de Cajeros Anómalos", font_size=10)
+    st.plotly_chart(fig, use_container_width=True)
+
     if st.session_state.selectbox_customers != customerSelected:
         st.session_state.selectbox_customers = customerSelected
