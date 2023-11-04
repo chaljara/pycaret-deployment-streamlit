@@ -200,7 +200,7 @@ if __name__ == '__main__':
           value = links_dict["value"],
           color = "darkgray"
       ))])
-    fig.update_layout(title_text="Detalle Jerárquico de Cajeros Anómalos", font_size=10)
+    fig.update_layout(title_text="Distribución Jerárquico de Cajeros Anómalos", font_size=10)
     st.plotly_chart(fig, use_container_width=True)
 
     if st.session_state.selectbox_customers != customerSelected:
