@@ -114,21 +114,12 @@ def evaluate():
     merged = anomalies.reset_index()
 
 if __name__ == '__main__':
+    st.set_page_config(layout="wide")
+    
     load()
 
     evaluate()
-
-    st.set_page_config(
-        #page_title="Ex-stream-ly Cool App",
-        page_icon="🧊",
-        layout="wide",
-        initial_sidebar_state="expanded",
-        #menu_items={
-        #    'Get Help': 'https://www.extremelycoolapp.com/help',
-        #    'Report a bug': "https://www.extremelycoolapp.com/bug",
-        #    'About': "# This is a header. This is an *extremely* cool app!"
-        #}
-    )
+    
     #Customers
     customers = data_pivot_no_geo.sort_values(by="CUSTOMER", ascending=True)["CUSTOMER"].unique()
     st.subheader('Módulo de detección de anomalías', divider='orange')
