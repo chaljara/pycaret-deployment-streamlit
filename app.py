@@ -151,7 +151,8 @@ if __name__ == '__main__':
         "PRINTER_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[61:73]["value"]) for id in data_filtered["ID"]],
     })
 
-    st.dataframe(data_filtered, hide_index=True, column_config={
+    st.dataframe(data_filtered, hide_index=True, 
+                 column_config={
                     "ID": "ATM",
                     "FAMILY": "FAMILIA",
                     "FUNCTION": "FUNCION",
