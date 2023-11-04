@@ -109,7 +109,7 @@ def evaluate():
     
     st.write("no_anomalies: ", no_anomalies.shape)
     st.write("anomalies: ", anomalies.shape)
-    st.dataframe(data_g_c.groupby("WEEK").agg(COUNT = ("W0", "count")).reset_index())
+    st.dataframe(data_g_c.groupby("WEEK").agg(COUNT = ("WEEK", "count")).reset_index())
     st.dataframe(result_iforest.groupby("Anomaly").count())
     merged = anomalies.reset_index()
 
