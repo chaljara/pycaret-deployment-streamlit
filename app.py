@@ -190,7 +190,7 @@ if __name__ == '__main__':
     fig.update_layout(title_text="Distribución Jerárquica de Cajeros Anómalos", 
                   font=dict(size=12, color="black", family="Arial"),
                   #font_size=10, 
-                  #width=1200, 
+                  width=300, 
                   #height=700,
                   hovermode='y unified')
     
