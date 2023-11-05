@@ -177,8 +177,8 @@ if __name__ == '__main__':
           value = links_dict["value"],
          color = "lightgray"
       ))])
-    fig.update_layout(title_text="Distribución Jerárquica de Cajeros Anómalos", 
-                  font=dict(size=16, color="black", family="Arial"),
+    fig.update_layout(#title_text="", 
+                  #font=dict(size=16, color="black", family="Arial"),
                   #font_size=10, 
                   #width=250, 
                   #height=700,
@@ -194,7 +194,7 @@ if __name__ == '__main__':
     col1, col2 = st.columns([2, 1])
     
     with col1:
-        st.subheader("Cajeros automáticos anómalos detectados")
+        st.subheader("Cajeros anómalos detectados")
         st.dataframe(data_filtered.reset_index(drop=True), 
                      hide_index=False, 
                      use_container_width=True, 
@@ -213,6 +213,7 @@ if __name__ == '__main__':
                     })
     with col2:
         #Diagrama Sanky
+        st.subheader("Distribución jerárquica")
         st.plotly_chart(fig, use_container_width=True)
 
     if st.session_state.selectbox_customers != customerSelected:
