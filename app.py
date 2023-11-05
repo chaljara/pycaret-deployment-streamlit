@@ -207,7 +207,7 @@ if __name__ == '__main__':
                         "EPP_DOWTIME": st.column_config.LineChartColumn("TECLADO", y_min=0, y_max=86400),
                         "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA", y_min=0, y_max=86400),
                     })
-    with col1:
+    with col2:
         #Diagrama Sanky
         st.plotly_chart(fig, use_container_width=True)
 
