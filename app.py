@@ -116,7 +116,7 @@ def evaluate():
     merged = anomalies.reset_index()
 
 if __name__ == '__main__':
-    st.set_page_config(layout="wide", theme="light")
+    st.set_page_config(layout="wide")#, theme="light")
     
     load()
 
