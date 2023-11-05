@@ -186,7 +186,7 @@ if __name__ == '__main__':
     #              #width=250, 
     #              #height=700,
     #              hovermode='y unified')
-    fig = px.parallel_categories(df,
+    fig = px.parallel_categories(anomalies_by_customer,
                              dimensions=['FAMILY', 'FUNCTION', 'SITE', 'MODEL' ],
                              color_continuous_scale=["gray","red"],#px.colors.sequential.Agsunset,
                              color="Cantidad",
