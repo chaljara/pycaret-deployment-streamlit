@@ -194,7 +194,7 @@ if __name__ == '__main__':
                   #height=700,
                   hovermode='y unified')
     
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([2, 1])
     
     with col1:
         st.dataframe(data_filtered.reset_index(drop=True), hide_index=False, use_container_width=True, 
@@ -213,7 +213,7 @@ if __name__ == '__main__':
                     })
     with col2:
         #Diagrama Sanky
-        st.plotly_chart(fig, use_container_width=False)
+        st.plotly_chart(fig, use_container_width=True)
 
     if st.session_state.selectbox_customers != customerSelected:
         st.session_state.selectbox_customers = customerSelected
