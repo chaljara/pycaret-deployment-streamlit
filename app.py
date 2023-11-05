@@ -109,11 +109,11 @@ def evaluate():
     no_anomalies = result_iforest[result_iforest["Anomaly"] == 0]
     anomalies = result_iforest[result_iforest["Anomaly"] == 1]
     
-    st.write("no_anomalies: ", no_anomalies.shape)
-    st.write("anomalies: ", anomalies.shape)
-    st.dataframe(data_g_c.groupby("WEEK").agg(COUNT = ("WEEK", "count")).reset_index())
-    st.dataframe(result_iforest.groupby("Anomaly").count())
-    st.dataframe(result_iforest.groupby(["CUSTOMER","Anomaly"]).count())
+    #st.write("no_anomalies: ", no_anomalies.shape)
+    #st.write("anomalies: ", anomalies.shape)
+    #st.dataframe(data_g_c.groupby("WEEK").agg(COUNT = ("WEEK", "count")).reset_index())
+    #st.dataframe(result_iforest.groupby("Anomaly").count())
+    #st.dataframe(result_iforest.groupby(["CUSTOMER","Anomaly"]).count())
     merged = anomalies.reset_index()
 
 if __name__ == '__main__':
@@ -130,12 +130,7 @@ if __name__ == '__main__':
     #col1, col2 = st.columns(2)
     
     #with col1:
-    customerSelected = st.selectbox(
-        "Seleccione un cliente: ",
-        customers,
-        key="selectbox_customers"#,
-        #on_change=lambda new_option: st.write(f"Seleccionaste: {customerSelected}")
-    )
+    customerSelected = st.selectbox("Seleccione un cliente: ", customers, key="selectbox_customers")
     
     data_filtered = pd.DataFrame(merged, copy=True)
     data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]#[["ID", "MODEL", "FUNCTION", "FAMILY", "SITE"]]
@@ -156,21 +151,6 @@ if __name__ == '__main__':
         "PRINTER_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[61:73]["value"]) for id in data_filtered["ID"]],
     })
 
-    st.dataframe(data_filtered, hide_index=False, 
-                 column_config={
-                    "ID": "ATM",
-                    "FAMILY": "FAMILIA",
-                    "FUNCTION": "FUNCION",
-                    "MODEL": "MODELO",
-                    "SITE": "TIPO",
-                    "CARD_DOWTIME": st.column_config.LineChartColumn("TARJETA", y_min=0, y_max=86400),
-                    "CASH_DOWTIME": st.column_config.LineChartColumn("DISPENSADOR", y_min=0, y_max=86400),
-                    "ACCEPTOR_DOWTIME": st.column_config.LineChartColumn("ACEPTADOR", y_min=0, y_max=86400),
-                    "DEPOSITOR_DOWTIME": st.column_config.LineChartColumn("CHEQUE", y_min=0, y_max=86400),
-                    "EPP_DOWTIME": st.column_config.LineChartColumn("TECLADO", y_min=0, y_max=86400),
-                    "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA", y_min=0, y_max=86400),
-                })
-    #Diagrama Sanky
     anomalies_by_customer = anomalies.loc[anomalies["CUSTOMER"] == customerSelected]
     
     df1 = anomalies_by_customer.groupby(['FAMILY', 'FUNCTION'])['W0'].count().reset_index()
@@ -209,7 +189,27 @@ if __name__ == '__main__':
                   width=1200, 
                   height=700,
                   hovermode='y unified')
-    st.plotly_chart(fig, use_container_width=True)
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.dataframe(data_filtered, hide_index=False, 
+                     column_config={
+                        "ID": "ATM",
+                        "FAMILY": "FAMILIA",
+                        "FUNCTION": "FUNCION",
+                        "MODEL": "MODELO",
+                        "SITE": "TIPO",
+                        "CARD_DOWTIME": st.column_config.LineChartColumn("TARJETA", y_min=0, y_max=86400),
+                        "CASH_DOWTIME": st.column_config.LineChartColumn("DISPENSADOR", y_min=0, y_max=86400),
+                        "ACCEPTOR_DOWTIME": st.column_config.LineChartColumn("ACEPTADOR", y_min=0, y_max=86400),
+                        "DEPOSITOR_DOWTIME": st.column_config.LineChartColumn("CHEQUE", y_min=0, y_max=86400),
+                        "EPP_DOWTIME": st.column_config.LineChartColumn("TECLADO", y_min=0, y_max=86400),
+                        "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA", y_min=0, y_max=86400),
+                    })
+    with col1:
+        #Diagrama Sanky
+        st.plotly_chart(fig, use_container_width=True)
 
     if st.session_state.selectbox_customers != customerSelected:
         st.session_state.selectbox_customers = customerSelected
