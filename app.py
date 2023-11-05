@@ -190,11 +190,11 @@ if __name__ == '__main__':
     fig.update_layout(title_text="Distribución Jerárquica de Cajeros Anómalos", 
                   font=dict(size=12, color="black", family="Arial"),
                   #font_size=10, 
-                  width=250, 
+                  #width=250, 
                   #height=700,
                   hovermode='y unified')
     
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
     
     with col1:
         st.dataframe(data_filtered.reset_index(drop=True), hide_index=False, use_container_width=True, 
@@ -212,21 +212,6 @@ if __name__ == '__main__':
                         "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA", y_min=0, y_max=86400, width="small"),
                     })
     with col2:
-        st.dataframe(data_filtered.reset_index(drop=True), hide_index=False, use_container_width=True, 
-                     column_config={
-                        "ID": "ATM ID",
-                        "FAMILY": "FAMILIA",
-                        "FUNCTION": "FUNCION",
-                        "SITE": "TIPO",
-                        "MODEL": "MODELO",
-                        "CARD_DOWTIME": st.column_config.LineChartColumn("TARJETA", y_min=0, y_max=86400, width="small"),
-                        "CASH_DOWTIME": st.column_config.LineChartColumn("DISPENSADOR", y_min=0, y_max=86400, width="small"),
-                        "ACCEPTOR_DOWTIME": st.column_config.LineChartColumn("ACEPTADOR", y_min=0, y_max=86400, width="small"),
-                        "DEPOSITOR_DOWTIME": st.column_config.LineChartColumn("CHEQUE", y_min=0, y_max=86400, width="small"),
-                        "EPP_DOWTIME": st.column_config.LineChartColumn("TECLADO", y_min=0, y_max=86400, width="small"),
-                        "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA", y_min=0, y_max=86400, width="small"),
-                    })
-    with col3:
         #Diagrama Sanky
         st.plotly_chart(fig, use_container_width=False)
 
