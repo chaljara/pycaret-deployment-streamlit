@@ -121,7 +121,7 @@ if __name__ == '__main__':
         "textColor": "black",        # Black text color
         "primaryColor": "blue",      # Customize the primary color
     }
-    st.set_page_config(layout="wide")
+    st.set_page_config(layout="wide", theme="light")
     
     load()
 
