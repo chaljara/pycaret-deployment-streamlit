@@ -130,9 +130,7 @@ if __name__ == '__main__':
     customerSelected = st.selectbox("Seleccione un cliente: ", customers, key="selectbox_customers")
     
     data_filtered = pd.DataFrame(merged, copy=True)
-    data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]#[["ID", "MODEL", "FUNCTION", "FAMILY", "SITE"]]
-
-    #data_g.loc[data_g["ID"] == "0000MTA"]["CARD_DOWNTIME"]
+    data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]
     
     data_filtered =  pd.DataFrame({"ID": data_filtered["ID"],
                                     "FAMILY": data_filtered["FAMILY"],
@@ -165,33 +163,33 @@ if __name__ == '__main__':
     links['target'] = links['target'].map(mapping_dict)
     links_dict = links.to_dict(orient='list')
     
-    #fig = go.Figure(data=[go.Sankey(
-    #    node = dict(
-    #      pad = 12,
-    #      thickness = 10,
-    #      #line = dict(color = "orange", width = 0.5),
-    #      label = unique_source_target,
-    #      color = "red"
-    #    ),
-    #link = dict(
-    #      source = links_dict["source"],
-    #      target = links_dict["target"],
-    #      value = links_dict["value"],
-    #     color = "lightgray"
-    #  ))])
-    #fig.update_layout(title_text="Distribución Jerárquica de Cajeros Anómalos", 
-    #              font=dict(size=12, color="black", family="Arial"),
-    #              #font_size=10, 
-    #              #width=250, 
-    #              #height=700,
-    #              hovermode='y unified')
-    fig = px.parallel_categories(anomalies_by_customer,
-                                 dimensions=['FAMILY', 'FUNCTION', 'SITE', 'MODEL' ],
-                                 color_continuous_scale=["gray","red"],#px.colors.sequential.Agsunset,
-                                 color="Cantidad",
-                                 labels={'FAMILY':'FAMILIA', 'FUNCTION':'FUNCION', 'SITE':'TIPO', 'MODEL':'MODELO'})
-    fig.update_traces(line={'shape':'hspline'} )
-    fig.update_layout(legend_title_text='Size', font=dict(size=14), paper_bgcolor='white')
+    fig = go.Figure(data=[go.Sankey(
+        node = dict(
+          pad = 12,
+          thickness = 10,
+          #line = dict(color = "orange", width = 0.5),
+          label = unique_source_target,
+          color = "red"
+        ),
+    link = dict(
+          source = links_dict["source"],
+          target = links_dict["target"],
+          value = links_dict["value"],
+         color = "lightgray"
+      ))])
+    fig.update_layout(title_text="Distribución Jerárquica de Cajeros Anómalos", 
+                  font=dict(size=16, color="black", family="Arial"),
+                  #font_size=10, 
+                  #width=250, 
+                  #height=700,
+                  hovermode='y unified')
+    #fig = px.parallel_categories(anomalies_by_customer,
+    #                             dimensions=['FAMILY', 'FUNCTION', 'SITE', 'MODEL' ],
+    #                             color_continuous_scale=["gray","red"],#px.colors.sequential.Agsunset,
+    #                             color="Cantidad",
+    #                             labels={'FAMILY':'FAMILIA', 'FUNCTION':'FUNCION', 'SITE':'TIPO', 'MODEL':'MODELO'})
+    #fig.update_traces(line={'shape':'hspline'} )
+    #fig.update_layout(legend_title_text='Size', font=dict(size=14), paper_bgcolor='white')
     
     col1, col2 = st.columns([2, 1])
     
