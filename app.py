@@ -116,7 +116,12 @@ def evaluate():
     merged = anomalies.reset_index()
 
 if __name__ == '__main__':
-    st.set_page_config(layout="wide")
+    light_theme = {
+        "backgroundColor": "#f0f0f0",  # Light background color
+        "textColor": "black",        # Black text color
+        "primaryColor": "blue",      # Customize the primary color
+    }
+    st.set_page_config(layout="wide", **light_theme)
     
     load()
 
@@ -185,8 +190,8 @@ if __name__ == '__main__':
     fig.update_layout(title_text="Distribución Jerárquica de Cajeros Anómalos", 
                   font=dict(size=12, color="black", family="Arial"),
                   #font_size=10, 
-                  width=1200, 
-                  height=700,
+                  #width=1200, 
+                  #height=700,
                   hovermode='y unified')
     
     col1, col2 = st.columns(2)
