@@ -170,15 +170,18 @@ if __name__ == '__main__':
                     "EPP_DOWTIME": st.column_config.LineChartColumn("TECLADO", y_min=0, y_max=86400),
                     "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA", y_min=0, y_max=86400),
                 })
-
-    df1 = anomalies.groupby(['FAMILY', 'FUNCTION'])['W0'].count().reset_index()
+    #Diagrama Sanky
+    anomalies_by_customer = anomalies.loc[anomalies["CUSTOMER"] == customerSelected]
+    
+    df1 = anomalies_by_customer.groupby(['FAMILY', 'FUNCTION'])['W0'].count().reset_index()
     df1.columns = ['source', 'target', 'value']
     
-    df2 = anomalies.groupby(['FUNCTION', 'SITE'])['W0'].count().reset_index()
+    df2 = anomalies_by_customer.groupby(['FUNCTION', 'SITE'])['W0'].count().reset_index()
     df2.columns = ['source', 'target', 'value']
     
-    df3 = anomalies.groupby(['SITE', 'MODEL'])['W0'].count().reset_index()
+    df3 = anomalies_by_customer.groupby(['SITE', 'MODEL'])['W0'].count().reset_index()
     df3.columns = ['source', 'target', 'value']
+    
     links = pd.concat([df1, df2, df3], axis=0)
     unique_source_target = list(pd.unique(links[['source', 'target']].values.ravel('K')))
     mapping_dict = {k: v for v, k in enumerate(unique_source_target)}
