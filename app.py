@@ -74,7 +74,6 @@ def evaluate():
       data_g_b = pd.DataFrame(data_g, copy=True)
       data_g_b["WEEK"] = i
       data_g_c = data_g_c.append(data_g_b).reset_index(drop=True)
-      print(data_g_b.shape, data_g_c.shape)
     
     data_g = pd.DataFrame(data_g_c, copy=True)
 
@@ -198,13 +197,13 @@ if __name__ == '__main__':
     col1, col2 = st.columns(2)
     
     with col1:
-        st.dataframe(data_filtered.reset_index(), hide_index=False, use_container_width=True, 
+        st.dataframe(data_filtered.reset_index(drop=True), hide_index=False, use_container_width=True, 
                      column_config={
                         "ID": "ATM",
                         "FAMILY": "FAMILIA",
                         "FUNCTION": "FUNCION",
-                        "MODEL": "MODELO",
                         "SITE": "TIPO",
+                        "MODEL": "MODELO",
                         "CARD_DOWTIME": st.column_config.LineChartColumn("TARJETA", y_min=0, y_max=86400),
                         "CASH_DOWTIME": st.column_config.LineChartColumn("DISPENSADOR", y_min=0, y_max=86400),
                         "ACCEPTOR_DOWTIME": st.column_config.LineChartColumn("ACEPTADOR", y_min=0, y_max=86400),
