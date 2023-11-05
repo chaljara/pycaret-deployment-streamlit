@@ -127,8 +127,8 @@ if __name__ == '__main__':
     n_anomalies = 0
     
     def custom_format(option):
-        n_anomalies = customer_count.loc[customer_count["CUSTOMER"] == option]["CUSTOMER_B"]
-        return n_anomalies
+        n_anomalies = customer_count.loc[customer_count["CUSTOMER"] == option]["Cantidad"]
+        return customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,2]
     
     customerSelected = st.selectbox("Seleccione un cliente: ", customer_count["CUSTOMER"], key="selectbox_customers", format_func=custom_format)
     
@@ -186,13 +186,6 @@ if __name__ == '__main__':
                   #width=250, 
                   #height=700,
                   hovermode='y unified')
-    #fig = px.parallel_categories(anomalies_by_customer,
-    #                             dimensions=['FAMILY', 'FUNCTION', 'SITE', 'MODEL' ],
-    #                             color_continuous_scale=["gray","red"],#px.colors.sequential.Agsunset,
-    #                             color="Cantidad",
-    #                             labels={'FAMILY':'FAMILIA', 'FUNCTION':'FUNCION', 'SITE':'TIPO', 'MODEL':'MODELO'})
-    #fig.update_traces(line={'shape':'hspline'} )
-    #fig.update_layout(legend_title_text='Size', font=dict(size=14), paper_bgcolor='white')
     
     col1, col2 = st.columns([2, 1])
     
