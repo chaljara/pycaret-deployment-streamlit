@@ -8,6 +8,7 @@ import numpy as np
 from datetime import datetime
 import plotly.graph_objects as go
 import plotly.colors as pc
+import plotly.express as px
 
 project_id = 'mcd-proyecto'
 bucket_name = "mcdproyectobucket"
@@ -168,27 +169,35 @@ if __name__ == '__main__':
     links['target'] = links['target'].map(mapping_dict)
     links_dict = links.to_dict(orient='list')
     
-    fig = go.Figure(data=[go.Sankey(
-        node = dict(
-          pad = 12,
-          thickness = 10,
-          #line = dict(color = "orange", width = 0.5),
-          label = unique_source_target,
-          color = "red"
-        ),
-    link = dict(
-          source = links_dict["source"],
-          target = links_dict["target"],
-          value = links_dict["value"],
-          color = "lightgray"
-      ))])
-    fig.update_layout(title_text="Distribución Jerárquica de Cajeros Anómalos", 
-                  font=dict(size=12, color="black", family="Arial"),
-                  #font_size=10, 
-                  #width=250, 
-                  #height=700,
-                  hovermode='y unified')
-    
+    #fig = go.Figure(data=[go.Sankey(
+    #    node = dict(
+    #      pad = 12,
+    #      thickness = 10,
+    #      #line = dict(color = "orange", width = 0.5),
+    #      label = unique_source_target,
+    #      color = "red"
+    #    ),
+    #link = dict(
+    #      source = links_dict["source"],
+    #      target = links_dict["target"],
+    #      value = links_dict["value"],
+    #     color = "lightgray"
+    #  ))])
+    #fig.update_layout(title_text="Distribución Jerárquica de Cajeros Anómalos", 
+    #              font=dict(size=12, color="black", family="Arial"),
+    #              #font_size=10, 
+    #              #width=250, 
+    #              #height=700,
+    #              hovermode='y unified')
+    fig = px.parallel_categories(df,
+                             dimensions=['FAMILY', 'FUNCTION', 'SITE', 'MODEL' ],
+                             #color_continuous_scale=["gray","black"],#px.colors.sequential.Agsunset,
+                             #color="Cantidad",
+                             labels={'FAMILY':'FAMILIA', 'FUNCTION':'FUNCION', 'SITE':'TIPO', 'MODEL':'MODELO'})
+    fig.update_traces(line={'shape':'hspline', 'color':'grey'} )
+    fig.update_layout(legend_title_text='Size', font=dict(size=14), paper_bgcolor='white')
+
+
     col1, col2 = st.columns([2, 1])
     
     with col1:
