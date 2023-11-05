@@ -196,7 +196,7 @@ if __name__ == '__main__':
     
     col1, col2, col3 = st.columns(3)
     
-    with col1 and col2:
+    with col1:
         st.dataframe(data_filtered.reset_index(drop=True), hide_index=False, use_container_width=True, 
                      column_config={
                         "ID": "ATM ID",
@@ -204,12 +204,27 @@ if __name__ == '__main__':
                         "FUNCTION": "FUNCION",
                         "SITE": "TIPO",
                         "MODEL": "MODELO",
-                        "CARD_DOWTIME": st.column_config.LineChartColumn("TARJETA", y_min=0, y_max=86400),
-                        "CASH_DOWTIME": st.column_config.LineChartColumn("DISPENSADOR", y_min=0, y_max=86400),
-                        "ACCEPTOR_DOWTIME": st.column_config.LineChartColumn("ACEPTADOR", y_min=0, y_max=86400),
-                        "DEPOSITOR_DOWTIME": st.column_config.LineChartColumn("CHEQUE", y_min=0, y_max=86400),
-                        "EPP_DOWTIME": st.column_config.LineChartColumn("TECLADO", y_min=0, y_max=86400),
-                        "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA", y_min=0, y_max=86400),
+                        "CARD_DOWTIME": st.column_config.LineChartColumn("TARJETA", y_min=0, y_max=86400, width="small"),
+                        "CASH_DOWTIME": st.column_config.LineChartColumn("DISPENSADOR", y_min=0, y_max=86400, width="small"),
+                        "ACCEPTOR_DOWTIME": st.column_config.LineChartColumn("ACEPTADOR", y_min=0, y_max=86400, width="small"),
+                        "DEPOSITOR_DOWTIME": st.column_config.LineChartColumn("CHEQUE", y_min=0, y_max=86400, width="small"),
+                        "EPP_DOWTIME": st.column_config.LineChartColumn("TECLADO", y_min=0, y_max=86400, width="small"),
+                        "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA", y_min=0, y_max=86400, width="small"),
+                    })
+    with col2:
+        st.dataframe(data_filtered.reset_index(drop=True), hide_index=False, use_container_width=True, 
+                     column_config={
+                        "ID": "ATM ID",
+                        "FAMILY": "FAMILIA",
+                        "FUNCTION": "FUNCION",
+                        "SITE": "TIPO",
+                        "MODEL": "MODELO",
+                        "CARD_DOWTIME": st.column_config.LineChartColumn("TARJETA", y_min=0, y_max=86400, width="small"),
+                        "CASH_DOWTIME": st.column_config.LineChartColumn("DISPENSADOR", y_min=0, y_max=86400, width="small"),
+                        "ACCEPTOR_DOWTIME": st.column_config.LineChartColumn("ACEPTADOR", y_min=0, y_max=86400, width="small"),
+                        "DEPOSITOR_DOWTIME": st.column_config.LineChartColumn("CHEQUE", y_min=0, y_max=86400, width="small"),
+                        "EPP_DOWTIME": st.column_config.LineChartColumn("TECLADO", y_min=0, y_max=86400, width="small"),
+                        "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA", y_min=0, y_max=86400, width="small"),
                     })
     with col3:
         #Diagrama Sanky
