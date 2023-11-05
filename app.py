@@ -134,19 +134,18 @@ if __name__ == '__main__':
 
     #data_g.loc[data_g["ID"] == "0000MTA"]["CARD_DOWNTIME"]
     
-    data_filtered =  pd.DataFrame({
-        "ID": data_filtered["ID"],
-        "FAMILY": data_filtered["FAMILY"],
-        "FUNCTION": data_filtered["FUNCTION"],
-        "MODEL": data_filtered["MODEL"],
-        "SITE": data_filtered["SITE"], 
-        "CARD_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[1:13]["value"]) for id in data_filtered["ID"]],
-        "CASH_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[13:25]["value"]) for id in data_filtered["ID"]],
-        "ACCEPTOR_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[25:37]["value"]) for id in data_filtered["ID"]],
-        "DEPOSITOR_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[37:49]["value"]) for id in data_filtered["ID"]],
-        "EPP_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[49:61]["value"]) for id in data_filtered["ID"]],
-        "PRINTER_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[61:73]["value"]) for id in data_filtered["ID"]],
-    })
+    data_filtered =  pd.DataFrame({"ID": data_filtered["ID"],
+                                    "FAMILY": data_filtered["FAMILY"],
+                                    "FUNCTION": data_filtered["FUNCTION"],
+                                    "MODEL": data_filtered["MODEL"],
+                                    "SITE": data_filtered["SITE"], 
+                                    "CARD_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[1:13]["value"]) for id in data_filtered["ID"]],
+                                    "CASH_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[13:25]["value"]) for id in data_filtered["ID"]],
+                                    "ACCEPTOR_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[25:37]["value"]) for id in data_filtered["ID"]],
+                                    "DEPOSITOR_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[37:49]["value"]) for id in data_filtered["ID"]],
+                                    "EPP_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[49:61]["value"]) for id in data_filtered["ID"]],
+                                    "PRINTER_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[61:73]["value"]) for id in data_filtered["ID"]]
+                                    })
 
     anomalies_by_customer = anomalies.loc[anomalies["CUSTOMER"] == customerSelected]
     
@@ -187,10 +186,10 @@ if __name__ == '__main__':
     #              #height=700,
     #              hovermode='y unified')
     fig = px.parallel_categories(anomalies_by_customer,
-                             dimensions=['FAMILY', 'FUNCTION', 'SITE', 'MODEL' ],
-                             color_continuous_scale=["gray","red"],#px.colors.sequential.Agsunset,
-                             color="Cantidad",
-                             labels={'FAMILY':'FAMILIA', 'FUNCTION':'FUNCION', 'SITE':'TIPO', 'MODEL':'MODELO'})
+                                 dimensions=['FAMILY', 'FUNCTION', 'SITE', 'MODEL' ],
+                                 color_continuous_scale=["gray","red"],#px.colors.sequential.Agsunset,
+                                 color="Cantidad",
+                                 labels={'FAMILY':'FAMILIA', 'FUNCTION':'FUNCION', 'SITE':'TIPO', 'MODEL':'MODELO'})
     fig.update_traces(line={'shape':'hspline'} )
     fig.update_layout(legend_title_text='Size', font=dict(size=14), paper_bgcolor='white')
     
@@ -198,7 +197,9 @@ if __name__ == '__main__':
     
     with col1:
         st.subheader("Cajeros automáticos anómalos detectados")
-        st.dataframe(data_filtered.reset_index(drop=True), hide_index=False, use_container_width=True, 
+        st.dataframe(data_filtered.reset_index(drop=True), 
+                     hide_index=False, 
+                     use_container_width=True, 
                      column_config={
                         "ID": "ATM ID",
                         "FAMILY": "FAMILIA",
