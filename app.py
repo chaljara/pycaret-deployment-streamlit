@@ -190,7 +190,7 @@ if __name__ == '__main__':
     col1, col2 = st.columns([2, 1])
     
     with col1:
-        st.subheader("Cajeros anómalos detectados ({n_anomalies})")
+        st.subheader("Cajeros anómalos detectados + "  (" n_anomalies + ")")
         st.dataframe(data_filtered.reset_index(drop=True), 
                      hide_index=False, 
                      use_container_width=True, 
