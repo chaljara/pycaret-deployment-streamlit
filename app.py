@@ -199,7 +199,7 @@ if __name__ == '__main__':
     with col1:
         st.dataframe(data_filtered.reset_index(drop=True), hide_index=False, use_container_width=True, 
                      column_config={
-                        "ID": "ATM",
+                        "ID": "ATM ID",
                         "FAMILY": "FAMILIA",
                         "FUNCTION": "FUNCION",
                         "SITE": "TIPO",
