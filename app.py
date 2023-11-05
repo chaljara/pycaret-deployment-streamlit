@@ -109,11 +109,6 @@ def evaluate():
     no_anomalies = result_iforest[result_iforest["Anomaly"] == 0]
     anomalies = result_iforest[result_iforest["Anomaly"] == 1]
     
-    #st.write("no_anomalies: ", no_anomalies.shape)
-    #st.write("anomalies: ", anomalies.shape)
-    #st.dataframe(data_g_c.groupby("WEEK").agg(COUNT = ("WEEK", "count")).reset_index())
-    #st.dataframe(result_iforest.groupby("Anomaly").count())
-    #st.dataframe(result_iforest.groupby(["CUSTOMER","Anomaly"]).count())
     merged = anomalies.reset_index()
 
 if __name__ == '__main__':
@@ -129,9 +124,11 @@ if __name__ == '__main__':
     
     customer_count = anomalies.groupby("CUSTOMER").agg(Cantidad = ("CUSTOMER","count")).reset_index()
     customer_count["CUSTOMER_B"] = customer_count["CUSTOMER"].astype(str) + "   (" + customer_count["Cantidad"].astype(str) + ")"
+    n_anomalies = 0
     
     def custom_format(option):
-        return customer_count.loc[customer_count["CUSTOMER"] == option]["CUSTOMER_B"]
+        n_anomalies = customer_count.loc[customer_count["CUSTOMER"] == option]["CUSTOMER_B"]
+        return n_anomalies
     
     customerSelected = st.selectbox("Seleccione un cliente: ", customer_count["CUSTOMER"], key="selectbox_customers", format_func=custom_format)
     
@@ -200,7 +197,7 @@ if __name__ == '__main__':
     col1, col2 = st.columns([2, 1])
     
     with col1:
-        st.subheader("Cajeros anómalos detectados")
+        st.subheader("Cajeros anómalos detectados ({n_anomalies})")
         st.dataframe(data_filtered.reset_index(drop=True), 
                      hide_index=False, 
                      use_container_width=True, 
