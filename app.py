@@ -151,12 +151,12 @@ if __name__ == '__main__':
         "PRINTER_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[61:73]["value"]) for id in data_filtered["ID"]],
     })
 
-    anomalies_by_customer = anomalies.loc[anomalies["CUSTOMER"] == customerSelected]
+    #anomalies_by_customer = anomalies.loc[anomalies["CUSTOMER"] == customerSelected]
     
-    df1 = anomalies_by_customer.groupby(['FAMILY', 'FUNCTION'])['W0'].count().reset_index()
+    df1 = data_filtered.groupby(['FAMILY', 'FUNCTION'])['W0'].count().reset_index()
     df1.columns = ['source', 'target', 'value']
     
-    df2 = anomalies_by_customer.groupby(['FUNCTION', 'SITE'])['W0'].count().reset_index()
+    df2 = data_filtered.groupby(['FUNCTION', 'SITE'])['W0'].count().reset_index()
     df2.columns = ['source', 'target', 'value']
     
     df3 = anomalies_by_customer.groupby(['SITE', 'MODEL'])['W0'].count().reset_index()
@@ -189,7 +189,7 @@ if __name__ == '__main__':
     #              #width=250, 
     #              #height=700,
     #              hovermode='y unified')
-    fig = px.parallel_categories(df,
+    fig = px.parallel_categories(data_filtered,
                              dimensions=['FAMILY', 'FUNCTION', 'SITE', 'MODEL' ],
                              #color_continuous_scale=["gray","black"],#px.colors.sequential.Agsunset,
                              #color="Cantidad",
