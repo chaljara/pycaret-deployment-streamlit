@@ -1,6 +1,5 @@
 from google.cloud import storage
 from google.oauth2 import service_account
-from pycaret.clustering import *
 from pycaret.anomaly import AnomalyExperiment
 import streamlit as st
 import pandas as pd
@@ -193,7 +192,7 @@ if __name__ == '__main__':
     col1, col2 = st.columns(2)
     
     with col1:
-        st.dataframe(data_filtered, hide_index=False, 
+        st.dataframe(data_filtered.reset_index(), hide_index=False, 
                      column_config={
                         "ID": "ATM",
                         "FAMILY": "FAMILIA",
