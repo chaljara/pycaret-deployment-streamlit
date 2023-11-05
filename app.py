@@ -121,7 +121,7 @@ if __name__ == '__main__':
         "textColor": "black",        # Black text color
         "primaryColor": "blue",      # Customize the primary color
     }
-    st.set_page_config(layout="wide", **light_theme)
+    st.set_page_config(layout="wide")
     
     load()
 
@@ -197,7 +197,7 @@ if __name__ == '__main__':
     col1, col2 = st.columns(2)
     
     with col1:
-        st.dataframe(data_filtered.reset_index(), hide_index=False, 
+        st.dataframe(data_filtered.reset_index(), hide_index=False, use_container_width=True 
                      column_config={
                         "ID": "ATM",
                         "FAMILY": "FAMILIA",
