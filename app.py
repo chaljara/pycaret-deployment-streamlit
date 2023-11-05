@@ -127,9 +127,6 @@ if __name__ == '__main__':
     customers = data_pivot_no_geo.sort_values(by="CUSTOMER", ascending=True)["CUSTOMER"].unique()
     st.subheader('Módulo de detección de anomalías', divider='orange')
     
-    #col1, col2 = st.columns(2)
-    
-    #with col1:
     customerSelected = st.selectbox("Seleccione un cliente: ", customers, key="selectbox_customers")
     
     data_filtered = pd.DataFrame(merged, copy=True)
@@ -151,12 +148,12 @@ if __name__ == '__main__':
         "PRINTER_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[61:73]["value"]) for id in data_filtered["ID"]],
     })
 
-    #anomalies_by_customer = anomalies.loc[anomalies["CUSTOMER"] == customerSelected]
+    anomalies_by_customer = anomalies.loc[anomalies["CUSTOMER"] == customerSelected]
     
-    df1 = data_filtered.groupby(['FAMILY', 'FUNCTION'])['W0'].count().reset_index()
+    df1 = anomalies_by_customer.groupby(['FAMILY', 'FUNCTION'])['W0'].count().reset_index()
     df1.columns = ['source', 'target', 'value']
     
-    df2 = data_filtered.groupby(['FUNCTION', 'SITE'])['W0'].count().reset_index()
+    df2 = anomalies_by_customer.groupby(['FUNCTION', 'SITE'])['W0'].count().reset_index()
     df2.columns = ['source', 'target', 'value']
     
     df3 = anomalies_by_customer.groupby(['SITE', 'MODEL'])['W0'].count().reset_index()
@@ -189,15 +186,14 @@ if __name__ == '__main__':
     #              #width=250, 
     #              #height=700,
     #              hovermode='y unified')
-    fig = px.parallel_categories(data_filtered,
+    fig = px.parallel_categories(df,
                              dimensions=['FAMILY', 'FUNCTION', 'SITE', 'MODEL' ],
-                             #color_continuous_scale=["gray","black"],#px.colors.sequential.Agsunset,
-                             #color="Cantidad",
+                             color_continuous_scale=["gray","red"],#px.colors.sequential.Agsunset,
+                             color="Cantidad",
                              labels={'FAMILY':'FAMILIA', 'FUNCTION':'FUNCION', 'SITE':'TIPO', 'MODEL':'MODELO'})
-    fig.update_traces(line={'shape':'hspline', 'color':'grey'} )
+    fig.update_traces(line={'shape':'hspline'} )
     fig.update_layout(legend_title_text='Size', font=dict(size=14), paper_bgcolor='white')
-
-
+    
     col1, col2 = st.columns([2, 1])
     
     with col1:
