@@ -194,9 +194,9 @@ if __name__ == '__main__':
                   #height=700,
                   hovermode='y unified')
     
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
     
-    with col1:
+    with col1 and col2:
         st.dataframe(data_filtered.reset_index(drop=True), hide_index=False, use_container_width=True, 
                      column_config={
                         "ID": "ATM ID",
@@ -211,7 +211,7 @@ if __name__ == '__main__':
                         "EPP_DOWTIME": st.column_config.LineChartColumn("TECLADO", y_min=0, y_max=86400),
                         "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA", y_min=0, y_max=86400),
                     })
-    with col2:
+    with col3:
         #Diagrama Sanky
         st.plotly_chart(fig, use_container_width=False)
 
