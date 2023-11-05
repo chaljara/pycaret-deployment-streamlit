@@ -191,19 +191,24 @@ if __name__ == '__main__':
     
     fig = go.Figure(data=[go.Sankey(
         node = dict(
-          pad = 8,
+          pad = 12,
           thickness = 10,
           #line = dict(color = "orange", width = 0.5),
           label = unique_source_target,
           color = "darkred"
         ),
-        link = dict(
+    link = dict(
           source = links_dict["source"],
           target = links_dict["target"],
           value = links_dict["value"],
-          color = "darkgray"
+          color = "slategray"
       ))])
-    fig.update_layout(title_text="Distribución Jerárquico de Cajeros Anómalos", font_size=10)
+    fig.update_layout(title_text="Distribución Jerárquica de Cajeros Anómalos", 
+                  font=dict(size=12, color="black", family="Arial"),
+                  #font_size=10, 
+                  width=1200, 
+                  height=700,
+                  hovermode='y unified')
     st.plotly_chart(fig, use_container_width=True)
 
     if st.session_state.selectbox_customers != customerSelected:
