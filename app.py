@@ -8,7 +8,6 @@ import numpy as np
 from datetime import datetime
 import plotly.graph_objects as go
 import plotly.colors as pc
-import plotly.express as px
 
 project_id = 'mcd-proyecto'
 bucket_name = "mcdproyectobucket"
