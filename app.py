@@ -120,7 +120,7 @@ if __name__ == '__main__':
     
     #Customers
     #customers = data_pivot_no_geo.sort_values(by="CUSTOMER", ascending=True)["CUSTOMER"].unique()
-    st.subheader('Módulo de detección de anomalías', divider='orange')
+    st.subheader('Módulo de detección de anomalías', divider='red')
     
     customer_count = anomalies.groupby("CUSTOMER").agg(Cantidad = ("CUSTOMER","count")).reset_index()
     customer_count["CUSTOMER_B"] = customer_count["CUSTOMER"].astype(str) + "   (" + customer_count["Cantidad"].astype(str) + ")"
@@ -131,6 +131,7 @@ if __name__ == '__main__':
         return customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,2]
     
     customerSelected = st.selectbox("Seleccione un cliente: ", customer_count["CUSTOMER"], key="selectbox_customers", format_func=custom_format)
+    st.subheader('', divider='red')
     
     data_filtered = pd.DataFrame(merged, copy=True)
     data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]
