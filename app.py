@@ -130,7 +130,7 @@ if __name__ == '__main__':
         return customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,2]
     
     customerSelected = st.selectbox("Seleccione un cliente: ", customer_count["CUSTOMER"], key="selectbox_customers", format_func=custom_format)
-    st.subheader('', divider='red')
+    st.subheader('')
     
     data_filtered = pd.DataFrame(merged, copy=True)
     data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]
