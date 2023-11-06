@@ -180,12 +180,13 @@ if __name__ == '__main__':
           value = links_dict["value"],
          color = "lightgray"
       ))])
-    fig.update_layout(#title_text="", 
+    fig.update_layout(title_text="", 
                   #font=dict(size=16, color="black", family="Arial"),
                   #font_size=10, 
                   #width=250, 
                   #height=700,
-                  hovermode='y unified')
+                  #hovermode='y unified'
+                    )
     
     col1, col2 = st.columns([2, 1])
     
