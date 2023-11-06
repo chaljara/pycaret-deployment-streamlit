@@ -200,7 +200,7 @@ if __name__ == '__main__':
                         "FAMILY": "FAMILIA",
                         "FUNCTION": "FUNCION",
                         "SITE": "TIPO",
-                        "MODEL": "MODELO",
+                        "MODEL": st.column_config.TextColumn(label="MODELO", width="small"),
                         "CARD_DOWTIME": st.column_config.LineChartColumn("TARJETA", y_min=0, y_max=86400, width="small"),
                         "CASH_DOWTIME": st.column_config.LineChartColumn("DISPENSADOR", y_min=0, y_max=86400, width="small"),
                         "ACCEPTOR_DOWTIME": st.column_config.LineChartColumn("ACEPTADOR", y_min=0, y_max=86400, width="small"),
