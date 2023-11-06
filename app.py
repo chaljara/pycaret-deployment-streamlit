@@ -200,12 +200,12 @@ if __name__ == '__main__':
                         "FUNCTION": st.column_config.TextColumn(label="FUNCION", width="small"),
                         "SITE": st.column_config.TextColumn(label="TIPO", width="small"),
                         "MODEL": st.column_config.TextColumn(label="MODELO", width="small"),
-                        "CARD_DOWTIME": st.column_config.LineChartColumn("TARJETA", y_min=0, y_max=86400, width="small"),
-                        "CASH_DOWTIME": st.column_config.LineChartColumn("DISPENSADOR", y_min=0, y_max=86400, width="small"),
-                        "ACCEPTOR_DOWTIME": st.column_config.LineChartColumn("ACEPTADOR", y_min=0, y_max=86400, width="small"),
-                        "DEPOSITOR_DOWTIME": st.column_config.LineChartColumn("CHEQUE", y_min=0, y_max=86400, width="small"),
-                        "EPP_DOWTIME": st.column_config.LineChartColumn("TECLADO", y_min=0, y_max=86400, width="small"),
-                        "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA", y_min=0, y_max=86400, width="small"),
+                        "CARD_DOWTIME": st.column_config.LineChartColumn("TARJETA (s)", y_min=0, y_max=86400, width="small", help="Promedio semanal del tiempo de inactividad de la lectora de tarjetas"),
+                        "CASH_DOWTIME": st.column_config.LineChartColumn("DISPENSADOR (s)", y_min=0, y_max=86400, width="small", help="Promedio semanal del tiempo de inactividad del dispensador de efectivo"),
+                        "ACCEPTOR_DOWTIME": st.column_config.LineChartColumn("ACEPTADOR (s)", y_min=0, y_max=86400, width="small", help="Promedio semanal del tiempo de inactividad del aceptador de efectivo"),
+                        "DEPOSITOR_DOWTIME": st.column_config.LineChartColumn("CHEQUE (s)", y_min=0, y_max=86400, width="small", help="Promedio semanal del tiempo de inactividad del depósito de cheques"),
+                        "EPP_DOWTIME": st.column_config.LineChartColumn("TECLADO (s)", y_min=0, y_max=86400, width="small", help="Promedio semanal del tiempo de inactividad del teclado electrónico"),
+                        "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA (s)", y_min=0, y_max=86400, width="small", help="Promedio semanal del tiempo de inactividad de la impresora de recibos"),
                     })
     with col2:
         #Diagrama Sanky
