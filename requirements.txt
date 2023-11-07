@@ -1,5 +1,4 @@
 google-cloud-storage
 streamlit
 pycaret
-holoviews[recommended]
-bokeh==2.4.3
+holoviews==1.14.5
