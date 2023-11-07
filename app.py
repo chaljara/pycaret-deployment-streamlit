@@ -202,7 +202,7 @@ if __name__ == '__main__':
     
     #if len(links_filtered) > 0:
     sankey = hv.Sankey(links_filtered, label='')
-    sankey.opts(width=600, height=400, hooks=[hide_hook], toolbar=None, default_tools = [], label_position='outer', edge_color='slategray', node_color='index', cmap='tab10', node_padding=15)
+    sankey.opts(width=650, height=350, hooks=[hide_hook], toolbar=None, default_tools = [], label_position='outer', edge_color='gray', node_color='index', cmap='autumn', node_padding=20)
 
     st.dataframe(links_filtered.shape)
     
