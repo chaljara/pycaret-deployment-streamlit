@@ -212,7 +212,7 @@ if __name__ == '__main__':
                   cmap='tab10', 
                   node_padding=15
                   )
-        st.bokeh_chart(sankey, use_container_width=True)
+      st.bokeh_chart(sankey, use_container_width=True)
     
     col1, col2 = st.columns([2, 1])
     
