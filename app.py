@@ -8,6 +8,7 @@ import numpy as np
 from datetime import datetime
 import plotly.graph_objects as go
 import plotly.colors as pc
+import holoviews as hv
 
 project_id = 'mcd-proyecto'
 bucket_name = "mcdproyectobucket"
@@ -187,6 +188,31 @@ if __name__ == '__main__':
                   #height=700,
                   #hovermode='y unified'
                     )
+    
+    hv.extension('bokeh')
+    links_filtered = links.loc[links["value"] > 0]
+    
+    def hide_hook(plot, element):
+        plot.handles["xaxis"].visible = False
+        plot.handles["yaxis"].visible = False 
+        # plot.handles["xgrid"].visible = False
+        # plot.handles["ygrid"].visible = False
+        plot.handles["plot"].border_fill_color = None
+        #plot.handles["plot"].background_fill_color = None
+        plot.handles["plot"].outline_line_color = None
+    
+    if len(links_filtered) > 0:
+      sankey = hv.Sankey(links_filtered, label='')
+      sankey.opts(hooks=[hide_hook], 
+                  toolbar=None, 
+                  default_tools = [], 
+                  label_position='outer', 
+                  edge_color='slategray', 
+                  node_color='index', 
+                  cmap='tab10', 
+                  node_padding=15
+                  )
+        st.bokeh_chart(sankey, use_container_width=True)
     
     col1, col2 = st.columns([2, 1])
     
