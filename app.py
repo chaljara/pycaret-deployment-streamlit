@@ -186,8 +186,7 @@ if __name__ == '__main__':
                   #font_size=10, 
                   #width=250, 
                   #height=700,
-                  #hovermode='y unified'
-                    )
+                  #hovermode='y unified' )
     
     hv.extension('bokeh')
     links_filtered = links.loc[links["value"] > 0]
