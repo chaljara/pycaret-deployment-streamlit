@@ -161,27 +161,27 @@ if __name__ == '__main__':
     df3.columns = ['source', 'target', 'value']
     
     links = pd.concat([df1, df2, df3], axis=0)
-    unique_source_target = list(pd.unique(links[['source', 'target']].values.ravel('K')))
-    mapping_dict = {k: v for v, k in enumerate(unique_source_target)}
-    links['source'] = links['source'].map(mapping_dict)
-    links['target'] = links['target'].map(mapping_dict)
-    links_dict = links.to_dict(orient='list')
+    #unique_source_target = list(pd.unique(links[['source', 'target']].values.ravel('K')))
+    #mapping_dict = {k: v for v, k in enumerate(unique_source_target)}
+    #links['source'] = links['source'].map(mapping_dict)
+    #links['target'] = links['target'].map(mapping_dict)
+    #links_dict = links.to_dict(orient='list')
     
-    fig = go.Figure(data=[go.Sankey(
-        node = dict(
-          pad = 12,
-          thickness = 10,
-          #line = dict(color = "orange", width = 0.5),
-          label = unique_source_target,
-          color = "red"
-        ),
-    link = dict(
-          source = links_dict["source"],
-          target = links_dict["target"],
-          value = links_dict["value"],
-         color = "lightgray"
-      ))])
-    fig.update_layout(title_text="", 
+    #fig = go.Figure(data=[go.Sankey(
+    #    node = dict(
+    #      pad = 12,
+    #      thickness = 10,
+    #      #line = dict(color = "orange", width = 0.5),
+    #      label = unique_source_target,
+    #      color = "red"
+    #    ),
+    #link = dict(
+    #      source = links_dict["source"],
+    #      target = links_dict["target"],
+    #      value = links_dict["value"],
+    #     color = "lightgray"
+    #  ))])
+    #fig.update_layout(title_text="", 
                   #font=dict(size=16, color="black", family="Arial"),
                   #font_size=10, 
                   #width=250, 
@@ -201,18 +201,11 @@ if __name__ == '__main__':
         #plot.handles["plot"].background_fill_color = None
         plot.handles["plot"].outline_line_color = None
     
-    if len(links_filtered) > 0:
-      sankey = hv.Sankey(links_filtered, label='')
-      sankey.opts(hooks=[hide_hook], 
-                  toolbar=None, 
-                  default_tools = [], 
-                  label_position='outer', 
-                  edge_color='slategray', 
-                  node_color='index', 
-                  cmap='tab10', 
-                  node_padding=15
-                  )
-      
+    #if len(links_filtered) > 0:
+    sankey = hv.Sankey(links_filtered, label='')
+    sankey.opts(hooks=[hide_hook], toolbar=None, default_tools = [], label_position='outer', edge_color='slategray', node_color='index', cmap='tab10', node_padding=15)
+
+    st.dataframe(links_filtered.shape)
     
     col1, col2 = st.columns([2, 1])
     
