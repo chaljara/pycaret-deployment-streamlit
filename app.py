@@ -161,32 +161,6 @@ if __name__ == '__main__':
     df3.columns = ['source', 'target', 'value']
     
     links = pd.concat([df1, df2, df3], axis=0)
-    #unique_source_target = list(pd.unique(links[['source', 'target']].values.ravel('K')))
-    #mapping_dict = {k: v for v, k in enumerate(unique_source_target)}
-    #links['source'] = links['source'].map(mapping_dict)
-    #links['target'] = links['target'].map(mapping_dict)
-    #links_dict = links.to_dict(orient='list')
-    
-    #fig = go.Figure(data=[go.Sankey(
-    #    node = dict(
-    #      pad = 12,
-    #      thickness = 10,
-    #      #line = dict(color = "orange", width = 0.5),
-    #      label = unique_source_target,
-    #      color = "red"
-    #    ),
-    #link = dict(
-    #      source = links_dict["source"],
-    #      target = links_dict["target"],
-    #      value = links_dict["value"],
-    #     color = "lightgray"
-    #  ))])
-    #fig.update_layout(title_text="", 
-                  #font=dict(size=16, color="black", family="Arial"),
-                  #font_size=10, 
-                  #width=250, 
-                  #height=700,
-                  #hovermode='y unified' )
     
     hv.extension('bokeh')
     links_filtered = links.loc[links["value"] > 0]
@@ -202,9 +176,7 @@ if __name__ == '__main__':
     
     #if len(links_filtered) > 0:
     sankey = hv.Sankey(links_filtered, label='')
-    sankey.opts(width=650, height=350, hooks=[hide_hook], toolbar=None, default_tools = [], label_position='outer', edge_color='gray', node_color='index', cmap='autumn', node_padding=20)
-
-    st.dataframe(links_filtered.shape)
+    sankey.opts(width=650, height=400, hooks=[hide_hook], toolbar=None, default_tools = [], label_position='outer', edge_color='gray', node_color='index', cmap='autumn', node_padding=20)
     
     col1, col2 = st.columns([2, 1])
     
