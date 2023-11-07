@@ -189,7 +189,7 @@ if __name__ == '__main__':
                   #hovermode='y unified'
                     )
     
-    #hv.extension('bokeh')
+    hv.extension('bokeh')
     links_filtered = links.loc[links["value"] > 0]
     
     def hide_hook(plot, element):
@@ -238,7 +238,8 @@ if __name__ == '__main__':
         #Diagrama Sanky
         st.subheader("Distribución jerárquica")
         #st.plotly_chart(fig, use_container_width=True)
-        st.bokeh_chart(sankey, use_container_width=True)
+        st.bokeh_chart(hv.render(sankey, backend='bokeh'))
+        #st.bokeh_chart(sankey, use_container_width=True)
 
     if st.session_state.selectbox_customers != customerSelected:
         st.session_state.selectbox_customers = customerSelected
