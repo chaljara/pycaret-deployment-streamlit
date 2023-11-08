@@ -164,6 +164,7 @@ if __name__ == '__main__':
     
     hv.extension('bokeh')
     links_filtered = links.loc[links["value"] > 0]
+    nlinks = len(links_filtered)
     
     def hide_hook(plot, element):
         plot.handles["xaxis"].visible = False
@@ -174,9 +175,9 @@ if __name__ == '__main__':
         #plot.handles["plot"].background_fill_color = None
         plot.handles["plot"].outline_line_color = None
     
-    #if len(links_filtered) > 0:
-    sankey = hv.Sankey(links_filtered, label='')
-    sankey.opts(width=650, height=375, hooks=[hide_hook], toolbar=None, default_tools = [], label_position='outer', edge_color='lightgray', node_color='index', cmap='tab20c', node_padding=20)
+    if nlinks > 0:
+        sankey = hv.Sankey(links_filtered, label='')
+        sankey.opts(width=650, height=375, hooks=[hide_hook], toolbar=None, default_tools = [], label_position='outer', edge_color='lightgray', node_color='index', cmap='tab20c', node_padding=20)
     
     col1, col2 = st.columns([2, 1])
     
@@ -202,7 +203,8 @@ if __name__ == '__main__':
         #Diagrama Sanky
         st.subheader("Distribución jerárquica")
         #st.plotly_chart(fig, use_container_width=True)
-        st.bokeh_chart(hv.render(sankey, backend='bokeh'))
+        if nlinks > 0:
+            st.bokeh_chart(hv.render(sankey, backend='bokeh'))
         #st.bokeh_chart(sankey, use_container_width=True)
 
     if st.session_state.selectbox_customers != customerSelected:
