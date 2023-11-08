@@ -176,7 +176,7 @@ if __name__ == '__main__':
     
     #if len(links_filtered) > 0:
     sankey = hv.Sankey(links_filtered, label='')
-    sankey.opts(width=650, height=375, hooks=[hide_hook], toolbar=None, default_tools = [], label_position='outer', edge_color='lightgray', node_color='index', cmap='tab20b', node_padding=20)
+    sankey.opts(width=650, height=375, hooks=[hide_hook], toolbar=None, default_tools = [], label_position='outer', edge_color='lightgray', node_color='index', cmap='tab20c', node_padding=20)
     
     col1, col2 = st.columns([2, 1])
     
