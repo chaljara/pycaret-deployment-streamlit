@@ -13,7 +13,7 @@ import holoviews as hv
 project_id = 'mcd-proyecto'
 bucket_name = "mcdproyectobucket"
 file_name = "dataset-v6-testweek35-ofuscated.csv"
-iforest_model_1 = "iforest_model_downtime"
+iforest_model = "iforest_model_downtime"
 
 #dataframes
 data = []
@@ -31,7 +31,6 @@ def load():
     credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
     storage_client = storage.Client(project=project_id, credentials=credentials)
     
-    # Specify the bucket and file
     bucket = storage_client.get_bucket(bucket_name)
     
     blob = bucket.blob(file_name)
@@ -78,7 +77,12 @@ def evaluate():
     
     data_g = pd.DataFrame(data_g_c, copy=True)
 
-    data_pivot = data_g.pivot_table(index='ID', columns='WEEK', values=["CARD_DOWNTIME", "CASH_DOWNTIME", "ACCEPTOR_DOWNTIME", "DEPOSITOR_DOWNTIME", "EPP_DOWNTIME", "PRINTER_DOWNTIME"], aggfunc='mean', sort=False)
+    data_pivot = data_g.pivot_table(index='ID', 
+                                    columns='WEEK', 
+                                    values=["CARD_DOWNTIME", "CASH_DOWNTIME",
+                                            "ACCEPTOR_DOWNTIME", "DEPOSITOR_DOWNTIME", 
+                                            "EPP_DOWNTIME", "PRINTER_DOWNTIME"], 
+                                    aggfunc='mean', sort=False)
     data_pivot.columns = [f'W{i}' for i in range(data_pivot.columns.size)]
     data_pivot_week_columns = data_pivot.columns
     
@@ -90,7 +94,6 @@ def evaluate():
     data_pivot_no_geo["SITE"] = categories["SITE"]
     data_pivot_no_geo["COUNTRY"] = categories["COUNTRY"]
 
-
     step = 12
     columnsByDevice = {}
     columnsByDeviceEvents = {}
@@ -101,7 +104,7 @@ def evaluate():
         columnsByDevice[key] = chunk
     
     auth = {"project": project_id, "bucket": bucket_name}
-    iforest_model = load_model(model_name=iforest_model_1, platform="gcp", authentication=auth)
+    iforest_model = load_model(model_name=iforest_model, platform="gcp", authentication=auth)
     
     iforest_setup = AnomalyExperiment()
     result_iforest = iforest_setup.predict_model(iforest_model, data=data_pivot_no_geo)
@@ -112,14 +115,13 @@ def evaluate():
     merged = anomalies.reset_index()
 
 if __name__ == '__main__':
-    st.set_page_config(layout="wide")#, theme="light")
+    st.set_page_config(layout="wide")
     
     load()
 
     evaluate()
     
-    #Customers
-    #customers = data_pivot_no_geo.sort_values(by="CUSTOMER", ascending=True)["CUSTOMER"].unique()
+    #Clientes
     st.subheader('Módulo de detección de anomalías', divider='red')
     
     customer_count = anomalies.groupby("CUSTOMER").agg(Cantidad = ("CUSTOMER","count")).reset_index()
@@ -177,7 +179,8 @@ if __name__ == '__main__':
     
     if nlinks > 0:
         sankey = hv.Sankey(links_filtered, label='')
-        sankey.opts(width=650, height=375, hooks=[hide_hook], toolbar=None, default_tools = [], label_position='outer', edge_color='lightgray', node_color='index', cmap='tab20c', node_padding=20)
+        sankey.opts(width=650, height=375, hooks=[hide_hook], toolbar=None, default_tools = [], 
+                    label_position='outer', edge_color='lightgray', node_color='index', cmap='tab20c', node_padding=20)
     
     col1, col2 = st.columns([2, 1])
     
@@ -192,20 +195,25 @@ if __name__ == '__main__':
                         "FUNCTION": st.column_config.TextColumn(label="FUNCION", width="small"),
                         "SITE": st.column_config.TextColumn(label="TIPO", width="small"),
                         "MODEL": st.column_config.TextColumn(label="MODELO", width="small"),
-                        "CARD_DOWTIME": st.column_config.LineChartColumn("TARJETA (s)", y_min=0, y_max=86400, width="small", help="Promedio semanal del tiempo de inactividad de la lectora de tarjetas"),
-                        "CASH_DOWTIME": st.column_config.LineChartColumn("DISPENSADOR (s)", y_min=0, y_max=86400, width="small", help="Promedio semanal del tiempo de inactividad del dispensador de efectivo"),
-                        "ACCEPTOR_DOWTIME": st.column_config.LineChartColumn("ACEPTADOR (s)", y_min=0, y_max=86400, width="small", help="Promedio semanal del tiempo de inactividad del aceptador de efectivo"),
-                        "DEPOSITOR_DOWTIME": st.column_config.LineChartColumn("CHEQUE (s)", y_min=0, y_max=86400, width="small", help="Promedio semanal del tiempo de inactividad del depósito de cheques"),
-                        "EPP_DOWTIME": st.column_config.LineChartColumn("TECLADO (s)", y_min=0, y_max=86400, width="small", help="Promedio semanal del tiempo de inactividad del teclado electrónico"),
-                        "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA (s)", y_min=0, y_max=86400, width="small", help="Promedio semanal del tiempo de inactividad de la impresora de recibos"),
+                        "CARD_DOWTIME": st.column_config.LineChartColumn("TARJETA (s)", y_min=0, y_max=86400, width="small", 
+                                                                         help="Promedio semanal del tiempo de inactividad de la lectora de tarjetas"),
+                        "CASH_DOWTIME": st.column_config.LineChartColumn("DISPENSADOR (s)", y_min=0, y_max=86400, width="small", 
+                                                                         help="Promedio semanal del tiempo de inactividad del dispensador de efectivo"),
+                        "ACCEPTOR_DOWTIME": st.column_config.LineChartColumn("ACEPTADOR (s)", y_min=0, y_max=86400, width="small", 
+                                                                             help="Promedio semanal del tiempo de inactividad del aceptador de efectivo"),
+                        "DEPOSITOR_DOWTIME": st.column_config.LineChartColumn("CHEQUE (s)", y_min=0, y_max=86400, width="small", 
+                                                                              help="Promedio semanal del tiempo de inactividad del depósito de cheques"),
+                        "EPP_DOWTIME": st.column_config.LineChartColumn("TECLADO (s)", y_min=0, y_max=86400, width="small", 
+                                                                        help="Promedio semanal del tiempo de inactividad del teclado electrónico"),
+                        "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA (s)", y_min=0, y_max=86400, width="small", 
+                                                                            help="Promedio semanal del tiempo de inactividad de la impresora de recibos"),
                     })
     with col2:
         #Diagrama Sanky
         st.subheader("Distribución jerárquica")
-        #st.plotly_chart(fig, use_container_width=True)
+        
         if nlinks > 0:
             st.bokeh_chart(hv.render(sankey, backend='bokeh'))
-        #st.bokeh_chart(sankey, use_container_width=True)
 
     if st.session_state.selectbox_customers != customerSelected:
         st.session_state.selectbox_customers = customerSelected
