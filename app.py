@@ -1,14 +1,12 @@
+import streamlit as st
+import pandas as pd
+import numpy as np
+import holoviews as hv
 from google.cloud import storage
 from google.oauth2 import service_account
 from pycaret.clustering import *
 from pycaret.anomaly import AnomalyExperiment
-import streamlit as st
-import pandas as pd
-import numpy as np
 from datetime import datetime
-import plotly.graph_objects as go
-import plotly.colors as pc
-import holoviews as hv
 
 project_id = 'mcd-proyecto'
 bucket_name = "mcdproyectobucket"
