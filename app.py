@@ -15,7 +15,7 @@ from datetime import datetime
 project_id = 'mcd-proyecto'
 bucket_name = "mcdproyectobucket"
 file_name = "dataset-v6-testweek35-ofuscated.csv"
-iforest_model = "iforest_model_downtime"
+iforest_model_name = "iforest_model_downtime"
 
 #dataframes
 data = []
@@ -107,7 +107,7 @@ def evaluate():
         columnsByDevice[key] = chunk
     
     auth = {"project": project_id, "bucket": bucket_name}
-    iforest_model = load_model(model_name=iforest_model, platform="gcp", authentication=auth)
+    iforest_model = load_model(model_name=iforest_model_name, platform="gcp", authentication=auth)
     
     iforest_setup = AnomalyExperiment()
     result_iforest = iforest_setup.predict_model(iforest_model, data=data_pivot_no_geo)
