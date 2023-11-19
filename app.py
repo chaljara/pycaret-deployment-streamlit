@@ -1,3 +1,7 @@
+#Módulo de detección de anomalías sobre los tiempos de inactividad
+#de cajeros automáticos usando Isolation Forest.
+#Christian Jaramillo Espinoza - MCD 2023
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -25,7 +29,7 @@ merged = []
 
 @st.cache_data
 def load():
-    
+    #Descarga del conjunto de datos
     credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
     storage_client = storage.Client(project=project_id, credentials=credentials)
     
@@ -44,7 +48,8 @@ def evaluate():
     global cluster_anomaly
     global anomalies
     global merged
-    
+
+    #Preprocesamiento de los datos
     data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
     data['DATETIME'] = pd.to_datetime(data['DATETIME'])
 
@@ -119,7 +124,7 @@ if __name__ == '__main__':
 
     evaluate()
     
-    #Clientes
+    #Obtención de los clientes
     st.subheader('Módulo de detección de anomalías', divider='red')
     
     customer_count = anomalies.groupby("CUSTOMER").agg(Cantidad = ("CUSTOMER","count")).reset_index()
@@ -135,7 +140,8 @@ if __name__ == '__main__':
     
     data_filtered = pd.DataFrame(merged, copy=True)
     data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]
-    
+
+    #Datos filtrados
     data_filtered =  pd.DataFrame({"ID": data_filtered["ID"],
                                     "FAMILY": data_filtered["FAMILY"],
                                     "FUNCTION": data_filtered["FUNCTION"],
@@ -148,19 +154,19 @@ if __name__ == '__main__':
                                     "EPP_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[49:61]["value"]) for id in data_filtered["ID"]],
                                     "PRINTER_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[61:73]["value"]) for id in data_filtered["ID"]]
                                     })
-
+    #Datos filtrados por cliente
     anomalies_by_customer = anomalies.loc[anomalies["CUSTOMER"] == customerSelected]
     
-    df1 = anomalies_by_customer.groupby(['FAMILY', 'FUNCTION'])['W0'].count().reset_index()
-    df1.columns = ['source', 'target', 'value']
+    df_fam_fun = anomalies_by_customer.groupby(['FAMILY', 'FUNCTION'])['W0'].count().reset_index()
+    df_fam_fun.columns = ['source', 'target', 'value']
     
-    df2 = anomalies_by_customer.groupby(['FUNCTION', 'SITE'])['W0'].count().reset_index()
-    df2.columns = ['source', 'target', 'value']
+    df_fun_sit = anomalies_by_customer.groupby(['FUNCTION', 'SITE'])['W0'].count().reset_index()
+    df_fun_sit.columns = ['source', 'target', 'value']
     
-    df3 = anomalies_by_customer.groupby(['SITE', 'MODEL'])['W0'].count().reset_index()
-    df3.columns = ['source', 'target', 'value']
+    df_sit_mod = anomalies_by_customer.groupby(['SITE', 'MODEL'])['W0'].count().reset_index()
+    df_sit_mod.columns = ['source', 'target', 'value']
     
-    links = pd.concat([df1, df2, df3], axis=0)
+    links = pd.concat([df_fam_fun, df_fun_sit, df_sit_mod], axis=0)
     
     hv.extension('bokeh')
     links_filtered = links.loc[links["value"] > 0]
@@ -169,13 +175,11 @@ if __name__ == '__main__':
     def hide_hook(plot, element):
         plot.handles["xaxis"].visible = False
         plot.handles["yaxis"].visible = False 
-        # plot.handles["xgrid"].visible = False
-        # plot.handles["ygrid"].visible = False
         plot.handles["plot"].border_fill_color = None
-        #plot.handles["plot"].background_fill_color = None
         plot.handles["plot"].outline_line_color = None
     
     if nlinks > 0:
+        #Creación de gráfica sankey
         sankey = hv.Sankey(links_filtered, label='')
         sankey.opts(width=650, height=375, hooks=[hide_hook], toolbar=None, default_tools = [], 
                     label_position='outer', edge_color='lightgray', node_color='index', cmap='tab20c', node_padding=20)
@@ -183,6 +187,7 @@ if __name__ == '__main__':
     col1, col2 = st.columns([2, 1])
     
     with col1:
+        #Visualización del dataframe
         st.subheader("Cajeros anómalos detectados")
         st.dataframe(data_filtered.reset_index(drop=True), 
                      hide_index=False, 
@@ -207,7 +212,7 @@ if __name__ == '__main__':
                                                                             help="Promedio semanal del tiempo de inactividad de la impresora de recibos"),
                     })
     with col2:
-        #Diagrama Sanky
+        #Visualización del gráfico Sanky
         st.subheader("Distribución jerárquica")
         
         if nlinks > 0:
