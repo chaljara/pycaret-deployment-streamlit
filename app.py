@@ -135,9 +135,6 @@ if __name__ == '__main__':
         n_anomalies = customer_count.loc[customer_count["CUSTOMER"] == option]["Cantidad"]
         return customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,2]
     
-    customerSelected = st.selectbox("Seleccione un cliente: ", customer_count["CUSTOMER"], key="selectbox_customers", format_func=custom_format)
-    st.subheader('')
-    
     data_filtered = pd.DataFrame(merged, copy=True)
     data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]
 
@@ -183,6 +180,20 @@ if __name__ == '__main__':
         sankey = hv.Sankey(links_filtered, label='')
         sankey.opts(width=650, height=375, hooks=[hide_hook], toolbar=None, default_tools = [], 
                     label_position='outer', edge_color='lightgray', node_color='index', cmap='tab20c', node_padding=20)
+    
+    col1a, col2a= st.columns([2, 1])
+    with col1a:
+        customerSelected = st.selectbox("Seleccione un cliente: ", customer_count["CUSTOMER"], key="selectbox_customers", format_func=custom_format)
+        
+    with col2a:
+        uploaded_file = st.file_uploader("Choose a file")
+        
+        if uploaded_file is not None:
+        # Can be used wherever a "file-like" object is accepted:
+        dataframe = pd.read_csv(uploaded_file)
+        st.write(dataframe)
+
+    st.subheader('')
     
     col1, col2 = st.columns([2, 1])
     
