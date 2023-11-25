@@ -30,6 +30,7 @@ uploaded_file = None
 customerSelected = ""
 customer_count = []
 links_filtered = []
+nlinks = 0
 
 @st.cache_data
 def load():
@@ -55,7 +56,8 @@ def evaluate(data):
     global customerSelected
     global links_filtered
     global customer_count
-
+    global nlinks
+    
     if data is None:
         data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
     st.write(data.shape)
@@ -175,6 +177,7 @@ def evaluate(data):
 def update_view():
     global data_filtered
     global customer_count
+    global nlinks
     
     #Obtención de los clientes
     st.subheader('Módulo de detección de anomalías', divider='red')
