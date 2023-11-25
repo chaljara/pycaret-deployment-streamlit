@@ -175,6 +175,7 @@ def evaluate(data):
 
 def update_view():
     global data_filtered
+    global customer_count
     
     #Obtención de los clientes
     st.subheader('Módulo de detección de anomalías', divider='red')
