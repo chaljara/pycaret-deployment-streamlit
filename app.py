@@ -50,6 +50,7 @@ def evaluate(data):
     global categories
     global data_pivot
     global data_pivot_no_geo
+    global data_filtered
     global cluster_anomaly
     global anomalies
     global merged
