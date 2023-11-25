@@ -237,7 +237,7 @@ def update_view():
 if __name__ == '__main__':
     load()
 
-    evaluate()
+    evaluate(None)
 
     update_view()
     
