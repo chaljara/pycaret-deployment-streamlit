@@ -43,8 +43,6 @@ def load():
     dataset_filename = "dataset.csv"
     blob.download_to_filename(dataset_filename)
 
-    datatmp = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
-
 def evaluate(data):
     #global data
     global data_g
@@ -56,6 +54,9 @@ def evaluate(data):
     global merged
     global customerSelected
     global links_filtered
+
+    if data is None:
+        data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
     
     #Preprocesamiento de los datos
     data['DATETIME'] = pd.to_datetime(data['DATETIME'])
