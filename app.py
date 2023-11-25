@@ -199,7 +199,7 @@ def update_view():
                         label_position='outer', edge_color='lightgray', node_color='index', cmap='tab20c', node_padding=20)
         
     with col2a:
-        uploaded_file = st.file_uploader()
+        uploaded_file = st.file_uploader(label="Subir datos")
         
         if uploaded_file is not None:
             newData = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
