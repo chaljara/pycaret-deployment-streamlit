@@ -175,7 +175,6 @@ def evaluate(data):
 
 def update_view():
     global data_filtered
-    st.set_page_config(layout="wide")
     
     #Obtención de los clientes
     st.subheader('Módulo de detección de anomalías', divider='red')
@@ -235,6 +234,8 @@ def update_view():
             st.bokeh_chart(hv.render(sankey, backend='bokeh'))
     
 if __name__ == '__main__':
+    st.set_page_config(layout="wide")
+    
     load()
 
     evaluate(None)
