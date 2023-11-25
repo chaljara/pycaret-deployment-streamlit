@@ -18,7 +18,7 @@ file_name = "dataset-v6-testweek35-ofuscated.csv"
 iforest_model_name = "iforest_model_downtime"
 
 #dataframes
-data = []
+datatmp = []
 data_g = []
 categories = []
 data_pivot = []
