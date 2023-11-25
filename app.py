@@ -26,6 +26,9 @@ data_pivot_no_geo = []
 cluster_anomaly = []
 anomalies = []
 merged = []
+uploaded_file = None
+customerSelected = ""
+links_filtered = []
 
 @st.cache_data
 def load():
@@ -38,9 +41,11 @@ def load():
     blob = bucket.blob(file_name)
     dataset_filename = "dataset.csv"
     blob.download_to_filename(dataset_filename)
-    
-def evaluate():
-    global data
+
+    datatmp = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
+
+def evaluate(data):
+    #global data
     global data_g
     global categories
     global data_pivot
@@ -48,9 +53,10 @@ def evaluate():
     global cluster_anomaly
     global anomalies
     global merged
-
+    global customerSelected
+    global links_filtered
+    
     #Preprocesamiento de los datos
-    data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
     data['DATETIME'] = pd.to_datetime(data['DATETIME'])
 
     categories = data[["CUSTOMER", "ID", "MODEL", "FUNCTION", "FAMILY", "SITE", "STATE", "CITY", "COUNTRY"]]
@@ -117,69 +123,66 @@ def evaluate():
     
     merged = anomalies.reset_index()
 
-if __name__ == '__main__':
-    st.set_page_config(layout="wide")
-    
-    load()
+    customer_count = anomalies.groupby("CUSTOMER").agg(Cantidad = ("CUSTOMER","count")).reset_index()
+    customer_count["CUSTOMER_B"] = customer_count["CUSTOMER"].astype(str) + "   (" + customer_count["Cantidad"].astype(str) + ")"
+    n_anomalies = 0
 
-    evaluate()
+    def custom_format(option):
+        n_anomalies = customer_count.loc[customer_count["CUSTOMER"] == option]["Cantidad"]
+        return customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,2]
+    
+    data_filtered = pd.DataFrame(merged, copy=True)
+    data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]
+
+    #Datos filtrados
+    data_filtered =  pd.DataFrame({"ID": data_filtered["ID"],
+                                    "FAMILY": data_filtered["FAMILY"],
+                                    "FUNCTION": data_filtered["FUNCTION"],
+                                    "SITE": data_filtered["SITE"], 
+                                    "MODEL": data_filtered["MODEL"],
+                                    "CARD_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[1:13]["value"]) for id in data_filtered["ID"]],
+                                    "CASH_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[13:25]["value"]) for id in data_filtered["ID"]],
+                                    "ACCEPTOR_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[25:37]["value"]) for id in data_filtered["ID"]],
+                                    "DEPOSITOR_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[37:49]["value"]) for id in data_filtered["ID"]],
+                                    "EPP_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[49:61]["value"]) for id in data_filtered["ID"]],
+                                    "PRINTER_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[61:73]["value"]) for id in data_filtered["ID"]]
+                                    })
+    #Datos filtrados por cliente
+    anomalies_by_customer = anomalies.loc[anomalies["CUSTOMER"] == customerSelected]
+    
+    df_fam_fun = anomalies_by_customer.groupby(['FAMILY', 'FUNCTION'])['W0'].count().reset_index()
+    df_fam_fun.columns = ['source', 'target', 'value']
+    
+    df_fun_sit = anomalies_by_customer.groupby(['FUNCTION', 'SITE'])['W0'].count().reset_index()
+    df_fun_sit.columns = ['source', 'target', 'value']
+    
+    df_sit_mod = anomalies_by_customer.groupby(['SITE', 'MODEL'])['W0'].count().reset_index()
+    df_sit_mod.columns = ['source', 'target', 'value']
+    
+    links = pd.concat([df_fam_fun, df_fun_sit, df_sit_mod], axis=0)
+    
+    hv.extension('bokeh')
+    links_filtered = links.loc[links["value"] > 0]
+    nlinks = len(links_filtered)
+    
+    def hide_hook(plot, element):
+        plot.handles["xaxis"].visible = False
+        plot.handles["yaxis"].visible = False 
+        plot.handles["plot"].border_fill_color = None
+        plot.handles["plot"].outline_line_color = None
+
+def update_view():
+    st.set_page_config(layout="wide")
     
     #Obtención de los clientes
     st.subheader('Módulo de detección de anomalías', divider='red')
     
-    customer_count = anomalies.groupby("CUSTOMER").agg(Cantidad = ("CUSTOMER","count")).reset_index()
-    customer_count["CUSTOMER_B"] = customer_count["CUSTOMER"].astype(str) + "   (" + customer_count["Cantidad"].astype(str) + ")"
-    n_anomalies = 0
-    
     col1a, col2a= st.columns([2, 1])
+    
     with col1a:
-        
-        def custom_format(option):
-            n_anomalies = customer_count.loc[customer_count["CUSTOMER"] == option]["Cantidad"]
-            return customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,2]
-            
         customerSelected = st.selectbox("Seleccione un cliente: ", customer_count["CUSTOMER"], key="selectbox_customers", format_func=custom_format)
         
-        data_filtered = pd.DataFrame(merged, copy=True)
-        data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]
-    
-        #Datos filtrados
-        data_filtered =  pd.DataFrame({"ID": data_filtered["ID"],
-                                        "FAMILY": data_filtered["FAMILY"],
-                                        "FUNCTION": data_filtered["FUNCTION"],
-                                        "SITE": data_filtered["SITE"], 
-                                        "MODEL": data_filtered["MODEL"],
-                                        "CARD_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[1:13]["value"]) for id in data_filtered["ID"]],
-                                        "CASH_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[13:25]["value"]) for id in data_filtered["ID"]],
-                                        "ACCEPTOR_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[25:37]["value"]) for id in data_filtered["ID"]],
-                                        "DEPOSITOR_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[37:49]["value"]) for id in data_filtered["ID"]],
-                                        "EPP_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[49:61]["value"]) for id in data_filtered["ID"]],
-                                        "PRINTER_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[61:73]["value"]) for id in data_filtered["ID"]]
-                                        })
-        #Datos filtrados por cliente
-        anomalies_by_customer = anomalies.loc[anomalies["CUSTOMER"] == customerSelected]
-        
-        df_fam_fun = anomalies_by_customer.groupby(['FAMILY', 'FUNCTION'])['W0'].count().reset_index()
-        df_fam_fun.columns = ['source', 'target', 'value']
-        
-        df_fun_sit = anomalies_by_customer.groupby(['FUNCTION', 'SITE'])['W0'].count().reset_index()
-        df_fun_sit.columns = ['source', 'target', 'value']
-        
-        df_sit_mod = anomalies_by_customer.groupby(['SITE', 'MODEL'])['W0'].count().reset_index()
-        df_sit_mod.columns = ['source', 'target', 'value']
-        
-        links = pd.concat([df_fam_fun, df_fun_sit, df_sit_mod], axis=0)
-        
-        hv.extension('bokeh')
-        links_filtered = links.loc[links["value"] > 0]
-        nlinks = len(links_filtered)
-        
-        def hide_hook(plot, element):
-            plot.handles["xaxis"].visible = False
-            plot.handles["yaxis"].visible = False 
-            plot.handles["plot"].border_fill_color = None
-            plot.handles["plot"].outline_line_color = None
-        
+        ##codigo de data_filtered
         if nlinks > 0:
             #Creación de gráfica sankey
             sankey = hv.Sankey(links_filtered, label='')
@@ -187,14 +190,12 @@ if __name__ == '__main__':
                         label_position='outer', edge_color='lightgray', node_color='index', cmap='tab20c', node_padding=20)
         
     with col2a:
-        uploaded_file = st.file_uploader("Choose a file")
+        uploaded_file = st.file_uploader()
         
         if uploaded_file is not None:
-            # Can be used wherever a "file-like" object is accepted:
-            dataframe = pd.read_csv(uploaded_file)
-            st.write(dataframe)
-
-    st.subheader('')
+            newData = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
+            evaluate(newData)
+            update_view()
     
     col1, col2 = st.columns([2, 1])
     
@@ -229,6 +230,13 @@ if __name__ == '__main__':
         
         if nlinks > 0:
             st.bokeh_chart(hv.render(sankey, backend='bokeh'))
+    
+if __name__ == '__main__':
+    load()
 
+    evaluate(datatmp)
+
+    update_view()
+    
     if st.session_state.selectbox_customers != customerSelected:
         st.session_state.selectbox_customers = customerSelected
