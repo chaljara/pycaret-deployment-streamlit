@@ -28,6 +28,7 @@ anomalies = []
 merged = []
 uploaded_file = None
 customerSelected = ""
+customer_count = []
 links_filtered = []
 
 @st.cache_data
@@ -172,6 +173,7 @@ def evaluate(data):
         plot.handles["plot"].outline_line_color = None
 
 def update_view():
+    global data_filtered
     st.set_page_config(layout="wide")
     
     #Obtención de los clientes
