@@ -130,9 +130,7 @@ def evaluate(data):
     customer_count["CUSTOMER_B"] = customer_count["CUSTOMER"].astype(str) + "   (" + customer_count["Cantidad"].astype(str) + ")"
     n_anomalies = 0
 
-    def custom_format(option):
-        n_anomalies = customer_count.loc[customer_count["CUSTOMER"] == option]["Cantidad"]
-        return customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,2]
+    
     
     data_filtered = pd.DataFrame(merged, copy=True)
     data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]
@@ -184,7 +182,9 @@ def update_view():
     col1a, col2a= st.columns([2, 1])
     
     with col1a:
-
+        def custom_format(option):
+            n_anomalies = customer_count.loc[customer_count["CUSTOMER"] == option]["Cantidad"]
+            return customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,2]
         #if not customer_count and customer_count is not None:
         customerSelected = st.selectbox("Seleccione un cliente: ", customer_count["CUSTOMER"], key="selectbox_customers", format_func=custom_format)
         
