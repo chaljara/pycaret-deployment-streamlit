@@ -54,13 +54,14 @@ def evaluate(data):
     global merged
     global customerSelected
     global links_filtered
+    global customer_count
 
     if data is None:
         data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
-    
+    st.write(data.shape)
     #Preprocesamiento de los datos
     data['DATETIME'] = pd.to_datetime(data['DATETIME'])
-
+    
     categories = data[["CUSTOMER", "ID", "MODEL", "FUNCTION", "FAMILY", "SITE", "STATE", "CITY", "COUNTRY"]]
     categories = categories.drop_duplicates(keep='first').reset_index()
     categories.set_index("ID", inplace=True)
@@ -183,6 +184,8 @@ def update_view():
     col1a, col2a= st.columns([2, 1])
     
     with col1a:
+
+        #if not customer_count and customer_count is not None:
         customerSelected = st.selectbox("Seleccione un cliente: ", customer_count["CUSTOMER"], key="selectbox_customers", format_func=custom_format)
         
         ##codigo de data_filtered
