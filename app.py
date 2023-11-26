@@ -134,22 +134,8 @@ def evaluate(data):
     customer_count["CUSTOMER_B"] = customer_count["CUSTOMER"].astype(str) + "   (" + customer_count["Cantidad"].astype(str) + ")"
     n_anomalies = 0
     
-    data_filtered = pd.DataFrame(merged, copy=True)
-    data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]
-
-    #Datos filtrados
-    data_filtered =  pd.DataFrame({"ID": data_filtered["ID"],
-                                    "FAMILY": data_filtered["FAMILY"],
-                                    "FUNCTION": data_filtered["FUNCTION"],
-                                    "SITE": data_filtered["SITE"], 
-                                    "MODEL": data_filtered["MODEL"],
-                                    "CARD_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[1:13]["value"]) for id in data_filtered["ID"]],
-                                    "CASH_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[13:25]["value"]) for id in data_filtered["ID"]],
-                                    "ACCEPTOR_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[25:37]["value"]) for id in data_filtered["ID"]],
-                                    "DEPOSITOR_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[37:49]["value"]) for id in data_filtered["ID"]],
-                                    "EPP_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[49:61]["value"]) for id in data_filtered["ID"]],
-                                    "PRINTER_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[61:73]["value"]) for id in data_filtered["ID"]]
-                                    })
+    update_dataframe()
+    
     #Datos filtrados por cliente
     anomalies_by_customer = anomalies.loc[anomalies["CUSTOMER"] == customerSelected]
     
@@ -174,11 +160,31 @@ def evaluate(data):
         plot.handles["plot"].border_fill_color = None
         plot.handles["plot"].outline_line_color = None
 
+def update_dataframe():
+    global data_filtered
+    global customerSelected
+    
+    data_filtered = pd.DataFrame(merged, copy=True)
+    data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]
+
+    #Datos filtrados
+    data_filtered =  pd.DataFrame({"ID": data_filtered["ID"],
+                                    "FAMILY": data_filtered["FAMILY"],
+                                    "FUNCTION": data_filtered["FUNCTION"],
+                                    "SITE": data_filtered["SITE"], 
+                                    "MODEL": data_filtered["MODEL"],
+                                    "CARD_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[1:13]["value"]) for id in data_filtered["ID"]],
+                                    "CASH_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[13:25]["value"]) for id in data_filtered["ID"]],
+                                    "ACCEPTOR_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[25:37]["value"]) for id in data_filtered["ID"]],
+                                    "DEPOSITOR_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[37:49]["value"]) for id in data_filtered["ID"]],
+                                    "EPP_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[49:61]["value"]) for id in data_filtered["ID"]],
+                                    "PRINTER_DOWTIME": [np.array(data_filtered.loc[data_filtered["ID"] == id].melt()[61:73]["value"]) for id in data_filtered["ID"]]
+                                    })
+    
 def update_view():
     global data_filtered
     global customer_count
     global nlinks
-    
     #Obtención de los clientes
     st.subheader('Módulo de detección de anomalías', divider='red')
     
@@ -188,8 +194,8 @@ def update_view():
         def custom_format(option):
             n_anomalies = customer_count.loc[customer_count["CUSTOMER"] == option]["Cantidad"]
             return customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,2]
-        #if not customer_count and customer_count is not None:
-        customerSelected = st.selectbox("Seleccione un cliente: ", customer_count["CUSTOMER"], key="selectbox_customers", format_func=custom_format, on_change=X)
+
+        customerSelected = st.selectbox("Seleccione un cliente: ", customer_count["CUSTOMER"], key="selectbox_customers", format_func=custom_format, on_change=update_dataframe)
         st.write("customer selected: ", customerSelected)
         
         ##codigo de data_filtered
