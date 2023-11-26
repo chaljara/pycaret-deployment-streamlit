@@ -133,8 +133,6 @@ def evaluate(data):
     customer_count = anomalies.groupby("CUSTOMER").agg(Cantidad = ("CUSTOMER","count")).reset_index()
     customer_count["CUSTOMER_B"] = customer_count["CUSTOMER"].astype(str) + "   (" + customer_count["Cantidad"].astype(str) + ")"
     n_anomalies = 0
-
-    
     
     data_filtered = pd.DataFrame(merged, copy=True)
     data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]
