@@ -161,6 +161,7 @@ def evaluate(data):
         plot.handles["plot"].outline_line_color = None
 
 def update_dataframe():
+    global merged
     global data_filtered
     global customerSelected
     
