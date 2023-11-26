@@ -23,6 +23,7 @@ data_g = []
 categories = []
 data_pivot = []
 data_pivot_no_geo = []
+data_filtered = []
 cluster_anomaly = []
 anomalies = []
 merged = []
@@ -190,7 +191,7 @@ def update_view():
             n_anomalies = customer_count.loc[customer_count["CUSTOMER"] == option]["Cantidad"]
             return customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,2]
         #if not customer_count and customer_count is not None:
-        customerSelected = st.selectbox("Seleccione un cliente: ", customer_count["CUSTOMER"], key="selectbox_customers", format_func=custom_format)
+        customerSelected = st.selectbox("Seleccione un cliente: ", customer_count["CUSTOMER"], key="selectbox_customers", format_func=custom_format, on_change=X)
         st.write("customer selected: ", customerSelected)
         
         ##codigo de data_filtered
