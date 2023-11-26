@@ -251,5 +251,5 @@ if __name__ == '__main__':
 
     update_view()
     
-    if st.session_state.selectbox_customers != customerSelected:
-        st.session_state.selectbox_customers = customerSelected
+    #if st.session_state.selectbox_customers != customerSelected:
+    #    st.session_state.selectbox_customers = customerSelected
