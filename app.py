@@ -191,6 +191,7 @@ def update_view():
             return customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,2]
         #if not customer_count and customer_count is not None:
         customerSelected = st.selectbox("Seleccione un cliente: ", customer_count["CUSTOMER"], key="selectbox_customers", format_func=custom_format)
+        st.write("customer selected: ", customerSelected)
         
         ##codigo de data_filtered
         if nlinks > 0:
