@@ -210,12 +210,7 @@ def update_view():
                         label_position='outer', edge_color='lightgray', node_color='index', cmap='tab20c', node_padding=20)
         
     with col2a:
-        uploaded_file = st.file_uploader(label="Subir datos")
-        
-        if uploaded_file is not None:
-            newData = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
-            evaluate(newData)
-            update_view()
+        None
     
     col1, col2 = st.columns([2, 1])
     
@@ -245,6 +240,14 @@ def update_view():
                         "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA (s)", y_min=0, y_max=86400, width="small", 
                                                                             help="Promedio semanal del tiempo de inactividad de la impresora de recibos"),
                     })
+        
+        uploaded_file = st.file_uploader(label="Subir datos")
+        
+        if uploaded_file is not None:
+            newData = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
+            evaluate(newData)
+            update_view()
+            
     with col2:
         #Visualización del gráfico Sanky
         st.subheader("Distribución jerárquica")
