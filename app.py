@@ -133,7 +133,13 @@ def evaluate(data):
     customer_count = anomalies.groupby("CUSTOMER").agg(Cantidad = ("CUSTOMER","count")).reset_index()
     customer_count["CUSTOMER_B"] = customer_count["CUSTOMER"].astype(str) + "   (" + customer_count["Cantidad"].astype(str) + ")"
     n_anomalies = 0
-    
+
+    def custom_format(option):
+        n_anomalies = customer_count.loc[customer_count["CUSTOMER"] == option]["Cantidad"]
+        return customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,2]
+
+    customerSelected = st.selectbox("Seleccione un cliente: ", customer_count["CUSTOMER"], key="selectbox_customers", format_func=custom_format)
+
     data_filtered = pd.DataFrame(merged, copy=True)
     data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]
 
@@ -193,13 +199,9 @@ def update_view():
     col1a, col2a= st.columns([2, 1])
     
     with col1a:
-        def custom_format(option):
-            n_anomalies = customer_count.loc[customer_count["CUSTOMER"] == option]["Cantidad"]
-            return customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,2]
-
-        customerSelected = st.selectbox("Seleccione un cliente: ", customer_count["CUSTOMER"], key="selectbox_customers", format_func=custom_format)
-        st.write("customer selected: ", customerSelected)
         
+        st.write("customer selected: ", customerSelected)
+        st.write("data_filtered: ", data_filtered.shape)
         ##codigo de data_filtered
         if nlinks > 0:
             #Creación de gráfica sankey
