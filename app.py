@@ -175,12 +175,6 @@ def evaluate(data):
     links_filtered = links.loc[links["value"] > 0]
     nlinks = len(links_filtered)
     
-    def hide_hook(plot, element):
-        plot.handles["xaxis"].visible = False
-        plot.handles["yaxis"].visible = False 
-        plot.handles["plot"].border_fill_color = None
-        plot.handles["plot"].outline_line_color = None
-
 def update_dataframe():
     global merged
     global data_filtered
@@ -202,7 +196,13 @@ def update_view():
         
         st.write("customer selected: ", customerSelected)
         st.write("data_filtered: ", data_filtered.shape)
-        ##codigo de data_filtered
+
+        def hide_hook(plot, element):
+            plot.handles["xaxis"].visible = False
+            plot.handles["yaxis"].visible = False 
+            plot.handles["plot"].border_fill_color = None
+            plot.handles["plot"].outline_line_color = None
+            
         if nlinks > 0:
             #Creación de gráfica sankey
             sankey = hv.Sankey(links_filtered, label='')
