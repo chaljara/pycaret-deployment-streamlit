@@ -234,16 +234,15 @@ def update_view():
                                                                                 help="Promedio semanal del tiempo de inactividad de la impresora de recibos"),
                         })
             
-            uploaded_file = st.file_uploader(label="Subir datos", key=str(uuid.uuid4()))
-            
-            if uploaded_file is not None:
-                newData = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
-                st.write(newData.shape)
-                #evaluate(newData)
-                #placeholder.empty()
-                #update_view()
-            else:
-                st.write("else is none")
+            uploaded_file = st.file_uploader(label="Subir datos", key=str(uuid.uuid4()), on_change="callback_on_upload")
+
+            def callback_on_upload:
+                if uploaded_file is not None:
+                    newData = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
+                    st.write(newData.shape)
+                    evaluate(newData)
+                    placeholder.empty()
+                    update_view()
     
         with col2:
             #Visualización del gráfico Sanky
