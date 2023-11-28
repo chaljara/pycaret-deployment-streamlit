@@ -237,7 +237,7 @@ def update_view():
                                                                                 help="Promedio semanal del tiempo de inactividad de la impresora de recibos"),
                         })
             
-            uploaded_file = st.file_uploader(label="Subir datos")
+            uploaded_file = st.file_uploader(label="Subir datos", key="uploaded_file1")
             
             if uploaded_file is not None:
                 newData = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
