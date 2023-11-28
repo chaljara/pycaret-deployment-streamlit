@@ -63,7 +63,7 @@ def evaluate(data):
     
     if data is None:
         data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
-    st.write(data.shape)
+    
     #Preprocesamiento de los datos
     data['DATETIME'] = pd.to_datetime(data['DATETIME'])
     
@@ -189,11 +189,7 @@ def update_view():
         
         col1a, col2a= st.columns([2, 1])
         
-        with col1a:
-            
-            st.write("customer selected: ", customerSelected)
-            st.write("data_filtered: ", data_filtered.shape)
-    
+        with col1a:    
             def hide_hook(plot, element):
                 plot.handles["xaxis"].visible = False
                 plot.handles["yaxis"].visible = False 
