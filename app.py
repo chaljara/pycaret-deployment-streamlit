@@ -241,7 +241,7 @@ def update_view():
                     placeholder.empty()
                     update_view()
                     
-            uploaded_file = st.file_uploader(label="Subir datos", key=str(uuid.uuid4()), on_change="callback_on_upload")
+            uploaded_file = st.file_uploader(label="Subir datos", key=str(uuid.uuid4()), on_change=callback_on_upload)
             
         with col2:
             #Visualización del gráfico Sanky
