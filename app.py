@@ -1,4 +1,4 @@
-lse#Módulo de detección de anomalías sobre los tiempos de 
+#Módulo de detección de anomalías sobre los tiempos de 
 #inactividad de cajeros automáticos usando Isolation Forest.
 #Christian Jaramillo Espinoza - MCD 2023
 
