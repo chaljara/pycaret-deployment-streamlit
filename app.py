@@ -61,10 +61,11 @@ def evaluate(data):
     global customer_count
     global nlinks
     
-    st.write(data.shape)
+    
     
     if data is None:
         data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
+        st.write(data.shape)
     st.write(data.shape)
     #Preprocesamiento de los datos
     data['DATETIME'] = pd.to_datetime(data['DATETIME'])
