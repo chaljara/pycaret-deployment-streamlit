@@ -138,7 +138,7 @@ def evaluate(data):
         n_anomalies = customer_count.loc[customer_count["CUSTOMER"] == option]["Cantidad"]
         return customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,2]
 
-    customerSelected = st.selectbox("Seleccione un cliente: ", customer_count["CUSTOMER"], key="selectbox_customers", format_func=custom_format)
+    customerSelected = st.selectbox("Seleccione un cliente: ", customer_count["CUSTOMER"], format_func=custom_format)
 
     data_filtered = pd.DataFrame(merged, copy=True)
     data_filtered = data_filtered.loc[data_filtered["CUSTOMER"] == customerSelected]
