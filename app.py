@@ -175,85 +175,82 @@ def evaluate(data):
     links_filtered = links.loc[links["value"] > 0]
     nlinks = len(links_filtered)
     
-def update_dataframe():
-    global merged
-    global data_filtered
-    global customerSelected
-    None
-    
-    
-    
 def update_view():
     global data_filtered
     global customer_count
     global nlinks
-    #Obtención de los clientes
-    st.subheader('Módulo de detección de anomalías', divider='red')
     
-    col1a, col2a= st.columns([2, 1])
-    
-    with col1a:
-        
-        st.write("customer selected: ", customerSelected)
-        st.write("data_filtered: ", data_filtered.shape)
+    placeholder = st.empty()
 
-        def hide_hook(plot, element):
-            plot.handles["xaxis"].visible = False
-            plot.handles["yaxis"].visible = False 
-            plot.handles["plot"].border_fill_color = None
-            plot.handles["plot"].outline_line_color = None
+    # Replace the chart with several elements:
+    with placeholder.container():
+        st.subheader('Módulo de detección de anomalías', divider='red')
+        
+        col1a, col2a= st.columns([2, 1])
+        
+        with col1a:
             
-        if nlinks > 0:
-            #Creación de gráfica sankey
-            sankey = hv.Sankey(links_filtered, label='')
-            sankey.opts(width=650, height=375, hooks=[hide_hook], toolbar=None, default_tools = [], 
-                        label_position='outer', edge_color='lightgray', node_color='index', cmap='tab20c', node_padding=20)
-        
-    with col2a:
-        None
+            st.write("customer selected: ", customerSelected)
+            st.write("data_filtered: ", data_filtered.shape)
     
-    col1, col2 = st.columns([2, 1])
-    
-    with col1:
-        #Visualización del dataframe
-        st.subheader("Cajeros anómalos detectados")
-        st.write("dataframe: ", data_filtered.shape)
-        st.dataframe(data_filtered.reset_index(drop=True), 
-                     hide_index=False, 
-                     use_container_width=True, 
-                     column_config={
-                        "ID": st.column_config.TextColumn(label="ATM ID", width="small"),
-                        "FAMILY": st.column_config.TextColumn(label="FAMILIA", width="small"),
-                        "FUNCTION": st.column_config.TextColumn(label="FUNCION", width="small"),
-                        "SITE": st.column_config.TextColumn(label="TIPO", width="small"),
-                        "MODEL": st.column_config.TextColumn(label="MODELO", width="small"),
-                        "CARD_DOWTIME": st.column_config.LineChartColumn("TARJETA (s)", y_min=0, y_max=86400, width="small", 
-                                                                         help="Promedio semanal del tiempo de inactividad de la lectora de tarjetas"),
-                        "CASH_DOWTIME": st.column_config.LineChartColumn("DISPENSADOR (s)", y_min=0, y_max=86400, width="small", 
-                                                                         help="Promedio semanal del tiempo de inactividad del dispensador de efectivo"),
-                        "ACCEPTOR_DOWTIME": st.column_config.LineChartColumn("ACEPTADOR (s)", y_min=0, y_max=86400, width="small", 
-                                                                             help="Promedio semanal del tiempo de inactividad del aceptador de efectivo"),
-                        "DEPOSITOR_DOWTIME": st.column_config.LineChartColumn("CHEQUE (s)", y_min=0, y_max=86400, width="small", 
-                                                                              help="Promedio semanal del tiempo de inactividad del depósito de cheques"),
-                        "EPP_DOWTIME": st.column_config.LineChartColumn("TECLADO (s)", y_min=0, y_max=86400, width="small", 
-                                                                        help="Promedio semanal del tiempo de inactividad del teclado electrónico"),
-                        "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA (s)", y_min=0, y_max=86400, width="small", 
-                                                                            help="Promedio semanal del tiempo de inactividad de la impresora de recibos"),
-                    })
-        
-        uploaded_file = st.file_uploader(label="Subir datos")
-        
-        if uploaded_file is not None:
-            newData = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
-            evaluate(newData)
-            update_view()
+            def hide_hook(plot, element):
+                plot.handles["xaxis"].visible = False
+                plot.handles["yaxis"].visible = False 
+                plot.handles["plot"].border_fill_color = None
+                plot.handles["plot"].outline_line_color = None
+                
+            if nlinks > 0:
+                #Creación de gráfica sankey
+                sankey = hv.Sankey(links_filtered, label='')
+                sankey.opts(width=650, height=375, hooks=[hide_hook], toolbar=None, default_tools = [], 
+                            label_position='outer', edge_color='lightgray', node_color='index', cmap='tab20c', node_padding=20)
             
-    with col2:
-        #Visualización del gráfico Sanky
-        st.subheader("Distribución jerárquica")
+        with col2a:
+            None
         
-        if nlinks > 0:
-            st.bokeh_chart(hv.render(sankey, backend='bokeh'))
+        col1, col2 = st.columns([2, 1])
+        
+        with col1:
+            #Visualización del dataframe
+            st.subheader("Cajeros anómalos detectados")
+            
+            st.dataframe(data_filtered.reset_index(drop=True), 
+                         hide_index=False, 
+                         use_container_width=True, 
+                         column_config={
+                            "ID": st.column_config.TextColumn(label="ATM ID", width="small"),
+                            "FAMILY": st.column_config.TextColumn(label="FAMILIA", width="small"),
+                            "FUNCTION": st.column_config.TextColumn(label="FUNCION", width="small"),
+                            "SITE": st.column_config.TextColumn(label="TIPO", width="small"),
+                            "MODEL": st.column_config.TextColumn(label="MODELO", width="small"),
+                            "CARD_DOWTIME": st.column_config.LineChartColumn("TARJETA (s)", y_min=0, y_max=86400, width="small", 
+                                                                             help="Promedio semanal del tiempo de inactividad de la lectora de tarjetas"),
+                            "CASH_DOWTIME": st.column_config.LineChartColumn("DISPENSADOR (s)", y_min=0, y_max=86400, width="small", 
+                                                                             help="Promedio semanal del tiempo de inactividad del dispensador de efectivo"),
+                            "ACCEPTOR_DOWTIME": st.column_config.LineChartColumn("ACEPTADOR (s)", y_min=0, y_max=86400, width="small", 
+                                                                                 help="Promedio semanal del tiempo de inactividad del aceptador de efectivo"),
+                            "DEPOSITOR_DOWTIME": st.column_config.LineChartColumn("CHEQUE (s)", y_min=0, y_max=86400, width="small", 
+                                                                                  help="Promedio semanal del tiempo de inactividad del depósito de cheques"),
+                            "EPP_DOWTIME": st.column_config.LineChartColumn("TECLADO (s)", y_min=0, y_max=86400, width="small", 
+                                                                            help="Promedio semanal del tiempo de inactividad del teclado electrónico"),
+                            "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA (s)", y_min=0, y_max=86400, width="small", 
+                                                                                help="Promedio semanal del tiempo de inactividad de la impresora de recibos"),
+                        })
+            
+            uploaded_file = st.file_uploader(label="Subir datos")
+            
+            if uploaded_file is not None:
+                newData = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
+                evaluate(newData)
+                placeholder.empty()
+                update_view()
+                
+        with col2:
+            #Visualización del gráfico Sanky
+            st.subheader("Distribución jerárquica")
+            
+            if nlinks > 0:
+                st.bokeh_chart(hv.render(sankey, backend='bokeh'))
     
 if __name__ == '__main__':
     st.set_page_config(layout="wide")
