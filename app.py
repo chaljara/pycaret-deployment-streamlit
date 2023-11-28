@@ -242,10 +242,10 @@ def update_view():
             
             if uploaded_file is not None:
                 data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
-                        st.write(data.shape)
-                        evaluate(True)
-                        placeholder.empty()
-                        update_view()
+                st.write(data.shape)
+                evaluate(True)
+                placeholder.empty()
+                update_view()
         with col2:
             #Visualización del gráfico Sanky
             st.subheader("Distribución jerárquica")
