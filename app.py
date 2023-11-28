@@ -238,6 +238,7 @@ def update_view():
             
             if uploaded_file is not None:
                 newData = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
+                st.write(newData.shape)
                 evaluate(newData)
                 placeholder.empty()
                 update_view()
