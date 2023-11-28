@@ -34,7 +34,7 @@ customer_count = []
 links_filtered = []
 nlinks = 0
 
-@st.cache_data
+#@st.cache_data
 def load():
     #Descarga del conjunto de datos
     credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
@@ -202,9 +202,6 @@ def update_view():
                 sankey.opts(width=650, height=375, hooks=[hide_hook], toolbar=None, default_tools = [], 
                             label_position='outer', edge_color='lightgray', node_color='index', cmap='tab20c', node_padding=20)
             
-        with col2a:
-            None
-        
         col1, col2 = st.columns([2, 1])
         
         with col1:
