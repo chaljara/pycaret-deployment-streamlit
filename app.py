@@ -1,4 +1,4 @@
-#Módulo de detección de anomalías sobre los tiempos de 
+lse#Módulo de detección de anomalías sobre los tiempos de 
 #inactividad de cajeros automáticos usando Isolation Forest.
 #Christian Jaramillo Espinoza - MCD 2023
 
@@ -242,7 +242,9 @@ def update_view():
                 #evaluate(newData)
                 #placeholder.empty()
                 #update_view()
-                
+            else:
+                st.write("else is none")
+    
         with col2:
             #Visualización del gráfico Sanky
             st.subheader("Distribución jerárquica")
