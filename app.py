@@ -12,6 +12,7 @@ from pycaret.clustering import *
 from pycaret.anomaly import AnomalyExperiment
 from datetime import datetime
 import uuid
+import time
 
 project_id = 'mcd-proyecto'
 bucket_name = "mcdproyectobucket"
@@ -215,7 +216,6 @@ def update_view():
             st.dataframe(data_filtered.reset_index(drop=True), 
                          hide_index=False, 
                          use_container_width=True,
-                         key="data12345",
                          column_config={
                             "ID": st.column_config.TextColumn(label="ATM ID", width="small"),
                             "FAMILY": st.column_config.TextColumn(label="FAMILIA", width="small"),
@@ -239,11 +239,10 @@ def update_view():
             #    if uploaded_file is not None:
                     
                     
-            uploaded_file = st.file_uploader(label="Subir datos", key="data12345")#, on_change=callback_on_upload
+            uploaded_file = st.file_uploader(label="Subir datos")#, on_change=callback_on_upload
             
             if uploaded_file is not None:
                 data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
-                st.dataframe(data)
                 #st.write(data.shape)
                 #evaluate(True)
                 #placeholder.empty()
@@ -257,6 +256,10 @@ def update_view():
     
 if __name__ == '__main__':
     st.set_page_config(layout="wide")
+    
+    # Get the current time in milliseconds
+    milliseconds = int(time.time() * 1000)
+    st.write(milliseconds)
     
     load()
 
