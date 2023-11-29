@@ -38,15 +38,25 @@ nlinks = 0
 
 #@st.cache_data
 def load():
+    global data
+    global file_uploaded
+    
     #Descarga del conjunto de datos
-    credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
-    storage_client = storage.Client(project=project_id, credentials=credentials)
+    if file_uploaded is None:
+        credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
+        storage_client = storage.Client(project=project_id, credentials=credentials)
+        
+        bucket = storage_client.get_bucket(bucket_name)
+        
+        blob = bucket.blob(file_name)
+        dataset_filename = "dataset.csv"
+        blob.download_to_filename(dataset_filename)
     
-    bucket = storage_client.get_bucket(bucket_name)
-    
-    blob = bucket.blob(file_name)
-    dataset_filename = "dataset.csv"
-    blob.download_to_filename(dataset_filename)
+        data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
+        st.write("Loaded default data")
+    else:
+        data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
+        st.write("Loaded file data")
 
 def evaluate(file_uploaded):
     global data
@@ -64,9 +74,6 @@ def evaluate(file_uploaded):
     global nlinks
     
     st.header('Módulo de detección de anomalías', divider='red')
-    
-    if not file_uploaded:
-        data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
         
     st.write(data.shape)
     #Preprocesamiento de los datos
@@ -241,8 +248,8 @@ def update_view():
                     
             uploaded_file = st.file_uploader(label="Subir datos")#, on_change=callback_on_upload
             
-            if uploaded_file is not None:
-                data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
+            #if uploaded_file is not None:
+            #    data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
                 #st.write(data.shape)
                 #evaluate(True)
                 #placeholder.empty()
@@ -263,7 +270,7 @@ if __name__ == '__main__':
     
     load()
 
-    evaluate(False)
+    evaluate()
 
     update_view()
     
