@@ -42,7 +42,7 @@ def load():
     global uploaded_file
     # Get the current time in milliseconds
     milliseconds = int(time.time() * 1000)
-    #st.write(milliseconds)
+    st.write(uploaded_file)
     #Descarga del conjunto de datos
     if uploaded_file is None:
         credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
