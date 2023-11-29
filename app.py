@@ -62,7 +62,7 @@ def evaluate(file_uploaded):
     global customer_count
     global nlinks
     
-    
+    st.header('Módulo de detección de anomalías', divider='red')
     
     if not file_uploaded:
         data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
@@ -189,7 +189,6 @@ def update_view():
 
     # Replace the chart with several elements:
     with placeholder.container():
-        st.subheader('Módulo de detección de anomalías', divider='red')
         
         col1a, col2a= st.columns([2, 1])
         
