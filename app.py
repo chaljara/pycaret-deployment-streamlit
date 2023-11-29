@@ -238,7 +238,7 @@ def update_view():
             #    if uploaded_file is not None:
                     
                     
-            uploaded_file = st.file_uploader(label="Subir datos", key=str(uuid.uuid4()))#, on_change=callback_on_upload
+            uploaded_file = st.file_uploader(label="Subir datos")#, on_change=callback_on_upload
             
             if uploaded_file is not None:
                 data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
