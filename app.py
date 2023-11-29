@@ -214,7 +214,8 @@ def update_view():
             
             st.dataframe(data_filtered.reset_index(drop=True), 
                          hide_index=False, 
-                         use_container_width=True, 
+                         use_container_width=True,
+                         key="data12345",
                          column_config={
                             "ID": st.column_config.TextColumn(label="ATM ID", width="small"),
                             "FAMILY": st.column_config.TextColumn(label="FAMILIA", width="small"),
@@ -238,7 +239,7 @@ def update_view():
             #    if uploaded_file is not None:
                     
                     
-            uploaded_file = st.file_uploader(label="Subir datos")#, on_change=callback_on_upload
+            uploaded_file = st.file_uploader(label="Subir datos", key="data12345")#, on_change=callback_on_upload
             
             if uploaded_file is not None:
                 data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
