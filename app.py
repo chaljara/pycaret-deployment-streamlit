@@ -40,7 +40,9 @@ nlinks = 0
 def load():
     global data
     global uploaded_file
-    
+    # Get the current time in milliseconds
+    milliseconds = int(time.time() * 1000)
+    #st.write(milliseconds)
     #Descarga del conjunto de datos
     if uploaded_file is None:
         credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
@@ -53,10 +55,10 @@ def load():
         blob.download_to_filename(dataset_filename)
     
         data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
-        st.write("Loaded default data")
+        st.write("Loaded default data "+milliseconds)
     else:
         data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
-        st.write("Loaded file data")
+        st.write("Loaded file data"+milliseconds)
 
 def evaluate():
     global data
@@ -266,9 +268,7 @@ def update_view():
 if __name__ == '__main__':
     st.set_page_config(layout="wide")
     
-    # Get the current time in milliseconds
-    milliseconds = int(time.time() * 1000)
-    st.write(milliseconds)
+    
     
     load()
 
