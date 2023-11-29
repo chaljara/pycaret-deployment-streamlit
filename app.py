@@ -181,6 +181,7 @@ def evaluate(file_uploaded):
     nlinks = len(links_filtered)
     
 def update_view():
+    global data
     global data_filtered
     global customer_count
     global nlinks
