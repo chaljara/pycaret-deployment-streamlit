@@ -238,11 +238,9 @@ def update_view():
             #    if uploaded_file is not None:
                     
                     
-            uploaded_file = st.file_uploader(label="Subir datos", key=str(uuid.uuid4()))#, on_change=callback_on_upload
             
-            if uploaded_file is not None:
-                data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
-                st.dataframe(data)
+            
+            
                 #st.write(data.shape)
                 #evaluate(True)
                 #placeholder.empty()
@@ -255,13 +253,11 @@ def update_view():
                 st.bokeh_chart(hv.render(sankey, backend='bokeh'))
     
 if __name__ == '__main__':
-    st.set_page_config(layout="wide")
+    uploaded_file = st.file_uploader(label="Subir datos")
     
-    load()
-
-    evaluate(False)
-
-    update_view()
+    if uploaded_file is not None:
+        data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
+        st.dataframe(data)
     
     #if st.session_state.selectbox_customers != customerSelected:
     #    st.session_state.selectbox_customers = customerSelected
