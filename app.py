@@ -58,7 +58,7 @@ def load():
         data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
         st.write("Loaded file data")
 
-def evaluate(file_uploaded):
+def evaluate():
     global data
     global data_g
     global categories
