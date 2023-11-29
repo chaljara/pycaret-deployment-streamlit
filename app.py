@@ -42,7 +42,7 @@ def load():
     global file_uploaded
     
     #Descarga del conjunto de datos
-    if file_uploaded is None:
+    if uploaded_file is None:
         credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
         storage_client = storage.Client(project=project_id, credentials=credentials)
         
