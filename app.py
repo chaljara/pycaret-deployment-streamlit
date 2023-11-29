@@ -55,10 +55,10 @@ def load():
         blob.download_to_filename(dataset_filename)
     
         data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
-        st.write("Loaded default data "+milliseconds)
+        st.write("Loaded default data "+str(milliseconds))
     else:
         data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
-        st.write("Loaded file data"+milliseconds)
+        st.write("Loaded file data"+str(milliseconds))
 
 def evaluate():
     global data
