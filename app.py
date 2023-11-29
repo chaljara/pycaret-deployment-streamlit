@@ -39,7 +39,7 @@ nlinks = 0
 #@st.cache_data
 def load():
     global data
-    global file_uploaded
+    global uploaded_file
     
     #Descarga del conjunto de datos
     if uploaded_file is None:
@@ -72,6 +72,7 @@ def evaluate():
     global links_filtered
     global customer_count
     global nlinks
+    global uploaded_file
     
     st.header('Módulo de detección de anomalías', divider='red')
         
@@ -191,6 +192,7 @@ def evaluate():
 def update_view():
     global data
     global data_filtered
+    global uploaded_file
     global customer_count
     global nlinks
     
