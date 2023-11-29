@@ -253,7 +253,7 @@ def update_view():
                 st.bokeh_chart(hv.render(sankey, backend='bokeh'))
     
 if __name__ == '__main__':
-    uploaded_file = st.file_uploader(label="Subir datos")
+    uploaded_file = st.file_uploader(label="Subir datos", key=str(uuid.uuid4())
     
     if uploaded_file is not None:
         data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
