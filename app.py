@@ -64,6 +64,7 @@ def load():
     #    data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
     #    st.write("Loaded file data"+str(milliseconds))
 
+    st.write(data.shape)
 def evaluate():
     global data
     global data_g
@@ -82,7 +83,6 @@ def evaluate():
     
     st.header('Módulo de detección de anomalías', divider='red')
         
-    st.write(data.shape)
     #Preprocesamiento de los datos
     data['DATETIME'] = pd.to_datetime(data['DATETIME'])
     
