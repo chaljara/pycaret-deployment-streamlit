@@ -44,21 +44,23 @@ def load():
     milliseconds = int(time.time() * 1000)
     st.write(uploaded_file)
     #Descarga del conjunto de datos
-    if uploaded_file is None:
-        credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
-        storage_client = storage.Client(project=project_id, credentials=credentials)
-        
-        bucket = storage_client.get_bucket(bucket_name)
-        
-        blob = bucket.blob(file_name)
-        dataset_filename = "dataset.csv"
-        blob.download_to_filename(dataset_filename)
+    #if uploaded_file is None:
     
-        data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
-        st.write("Loaded default data "+str(milliseconds))
-    else:
-        data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
-        st.write("Loaded file data"+str(milliseconds))
+    credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
+    storage_client = storage.Client(project=project_id, credentials=credentials)
+    
+    #bucket = storage_client.get_bucket(bucket_name)
+    
+    #blob = bucket.blob(file_name)
+    #dataset_filename = "dataset.csv"
+    #blob.download_to_filename(dataset_filename)
+
+    #data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
+    data = st.session_state['data']
+    st.write("Loaded default data "+str(milliseconds))
+    #else:
+    #    data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
+    #    st.write("Loaded file data"+str(milliseconds))
 
 def evaluate():
     global data
@@ -246,11 +248,12 @@ def update_view():
                             "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA (s)", y_min=0, y_max=86400, width="small", 
                                                                                 help="Promedio semanal del tiempo de inactividad de la impresora de recibos"),
                         })
-            #def callback_on_upload():
-            #    if uploaded_file is not None:
+            def callback_on_upload():
+                if uploaded_file is not None:
+                    st.session_state['data'] = uploaded_file
                     
                     
-            uploaded_file = st.file_uploader(label="Subir datos")#, on_change=callback_on_upload
+            uploaded_file = st.file_uploader(label="Subir datos", on_change=on_upload)
             
             #if uploaded_file is not None:
             #    data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
@@ -268,7 +271,8 @@ def update_view():
 if __name__ == '__main__':
     st.set_page_config(layout="wide")
     
-    
+    if 'data' not in st.session_state:
+        st.session_state['data'] = data
     
     load()
 
