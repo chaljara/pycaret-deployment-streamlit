@@ -38,7 +38,6 @@ nlinks = 0
 
 ml = int(time.time() * 1000)
 
-@st.cache_data
 def load():
     global data
     global uploaded_file
