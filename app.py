@@ -256,6 +256,7 @@ def update_view():
             if uploaded_file is not None:
                 st.write("uploaded_file")    
                 st.session_state['data'] = uploaded_file
+                st.write(st.session_state)
             else:
                 st.write("not uploaded_file")
         with col2:
