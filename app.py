@@ -38,6 +38,8 @@ nlinks = 0
 
 ml = int(time.time() * 1000)
 
+st.write(st.session_state)
+
 def load():
     global data
     global uploaded_file
@@ -273,7 +275,6 @@ if __name__ == '__main__':
     #if 'data' not in st.session_state:
     #    st.session_state['data'] = data
     st.write("ml: ", ml)
-    st.write(st.session_state)
     load()
 
     evaluate()
