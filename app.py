@@ -273,11 +273,13 @@ if __name__ == '__main__':
         #st.session_state['data'] = uploaded_file
         data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
         st.write(st.session_state)
+
+        load()
+    
+        evaluate()
+    
+        update_view()
     else:
         st.write("not uploaded_file")
                 
-    load()
-
-    evaluate()
-
-    update_view()
+    
