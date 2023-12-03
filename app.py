@@ -57,13 +57,11 @@ def load():
         blob = bucket.blob(file_name)
         dataset_filename = "dataset.csv"
         blob.download_to_filename(dataset_filename)
-    
-        data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
-        
         st.write("Loaded default data "+str(milliseconds))
+        data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
     else:
-        data = pd.read_csv(st.session_state['data'], sep=";", encoding="UTF-8")
         st.write("Loaded state data "+str(milliseconds))
+        data = pd.read_csv(st.session_state['data'].getvalue(), sep=";", encoding="UTF-8")
     #else:
     #    data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
     #    st.write("Loaded file data"+str(milliseconds))
