@@ -58,7 +58,7 @@ def load():
         
         st.write("Loaded default data "+str(milliseconds))
     else:
-        data = st.session_state['data']
+        data = pd.read_csv(st.session_state['data'], sep=";", encoding="UTF-8")
         st.write("Loaded state data "+str(milliseconds))
     #else:
     #    data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
