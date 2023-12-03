@@ -37,7 +37,7 @@ links_filtered = []
 nlinks = 0
 
 ml = int(time.time() * 1000)
-
+st.set_page_config(layout="wide")
 st.write(st.session_state)
 
 def load():
@@ -270,7 +270,7 @@ def update_view():
                 st.bokeh_chart(hv.render(sankey, backend='bokeh'))
     
 if __name__ == '__main__':
-    st.set_page_config(layout="wide")
+    
     
     #if 'data' not in st.session_state:
     #    st.session_state['data'] = data
