@@ -250,19 +250,12 @@ def update_view():
                             "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA (s)", y_min=0, y_max=86400, width="small", 
                                                                                 help="Promedio semanal del tiempo de inactividad de la impresora de recibos"),
                         })
-            def callback_on_upload():
+            def on_upload():
                 if uploaded_file is not None:
                     st.session_state['data'] = uploaded_file
                     
-                    
             uploaded_file = st.file_uploader(label="Subir datos", on_change=on_upload)
             
-            #if uploaded_file is not None:
-            #    data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
-                #st.write(data.shape)
-                #evaluate(True)
-                #placeholder.empty()
-                #update_view()
         with col2:
             #Visualización del gráfico Sanky
             st.subheader("Distribución jerárquica")
@@ -273,8 +266,8 @@ def update_view():
 if __name__ == '__main__':
     st.set_page_config(layout="wide")
     
-    if 'data' not in st.session_state:
-        st.session_state['data'] = data
+    #if 'data' not in st.session_state:
+    #    st.session_state['data'] = data
     
     load()
 
