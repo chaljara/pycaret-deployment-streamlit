@@ -42,22 +42,24 @@ def load():
     global uploaded_file
     # Get the current time in milliseconds
     milliseconds = int(time.time() * 1000)
-    st.write(uploaded_file)
     #Descarga del conjunto de datos
     #if uploaded_file is None:
+    if 'data' not in st.session_state:
+        credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
+        storage_client = storage.Client(project=project_id, credentials=credentials)
+        
+        bucket = storage_client.get_bucket(bucket_name)
+        
+        blob = bucket.blob(file_name)
+        dataset_filename = "dataset.csv"
+        blob.download_to_filename(dataset_filename)
     
-    credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
-    storage_client = storage.Client(project=project_id, credentials=credentials)
-    
-    #bucket = storage_client.get_bucket(bucket_name)
-    
-    #blob = bucket.blob(file_name)
-    #dataset_filename = "dataset.csv"
-    #blob.download_to_filename(dataset_filename)
-
-    #data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
-    data = st.session_state['data']
-    st.write("Loaded default data "+str(milliseconds))
+        data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
+        
+        st.write("Loaded default data "+str(milliseconds))
+    else:
+        data = st.session_state['data']
+        st.write("Loaded state data "+str(milliseconds))
     #else:
     #    data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
     #    st.write("Loaded file data"+str(milliseconds))
