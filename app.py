@@ -66,7 +66,6 @@ def load():
     #    data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
     #    st.write("Loaded file data"+str(milliseconds))
 
-    st.write(data.shape)
 def evaluate():
     global data
     global data_g
