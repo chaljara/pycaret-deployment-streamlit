@@ -250,12 +250,14 @@ def update_view():
                             "PRINTER_DOWTIME": st.column_config.LineChartColumn("IMPRESORA (s)", y_min=0, y_max=86400, width="small", 
                                                                                 help="Promedio semanal del tiempo de inactividad de la impresora de recibos"),
                         })
-            def on_upload():
-                if uploaded_file is not None:
-                    st.session_state['data'] = uploaded_file
                     
-            uploaded_file = st.file_uploader(label="Subir datos", on_change=on_upload)
+            uploaded_file = st.file_uploader(label="Subir datos")
             
+            if uploaded_file is not None:
+                st.write("uploaded_file")    
+                st.session_state['data'] = uploaded_file
+            else:
+                st.write("not uploaded_file")
         with col2:
             #Visualización del gráfico Sanky
             st.subheader("Distribución jerárquica")
