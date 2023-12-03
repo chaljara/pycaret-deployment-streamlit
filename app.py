@@ -269,13 +269,13 @@ if __name__ == '__main__':
     st.write("ml: ", ml)
     uploaded_file = st.file_uploader(label="Subir datos", type=['csv'])
             
-        if uploaded_file is not None:
-            st.write("uploaded_file")    
-            #st.session_state['data'] = uploaded_file
-            data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
-            st.write(st.session_state)
-        else:
-            st.write("not uploaded_file")
+    if uploaded_file is not None:
+        st.write("uploaded_file")    
+        #st.session_state['data'] = uploaded_file
+        data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
+        st.write(st.session_state)
+    else:
+        st.write("not uploaded_file")
                 
     load()
 
