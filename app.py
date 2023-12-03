@@ -48,20 +48,20 @@ def load():
     #Descarga del conjunto de datos
     #if uploaded_file is None:
     st.write("Load: ", ml)
-    if 'data' not in st.session_state:
-        credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
-        storage_client = storage.Client(project=project_id, credentials=credentials)
+    #if 'data' not in st.session_state:
+    #    credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
+    #    storage_client = storage.Client(project=project_id, credentials=credentials)
         
-        bucket = storage_client.get_bucket(bucket_name)
+    #    bucket = storage_client.get_bucket(bucket_name)
         
-        blob = bucket.blob(file_name)
-        dataset_filename = "dataset.csv"
-        blob.download_to_filename(dataset_filename)
-        st.write("Loaded default data "+str(milliseconds))
-        data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
-    else:
-        st.write("Loaded state data "+str(milliseconds))
-        data = pd.read_csv(st.session_state['data'].getvalue(), sep=";", encoding="UTF-8")
+    #    blob = bucket.blob(file_name)
+    #    dataset_filename = "dataset.csv"
+    #    blob.download_to_filename(dataset_filename)
+    #    st.write("Loaded default data "+str(milliseconds))
+    #    data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
+    #else:
+    #    st.write("Loaded state data "+str(milliseconds))
+    #    data = pd.read_csv(st.session_state['data'].getvalue(), sep=";", encoding="UTF-8")
     #else:
     #    data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
     #    st.write("Loaded file data"+str(milliseconds))
@@ -253,14 +253,7 @@ def update_view():
                                                                                 help="Promedio semanal del tiempo de inactividad de la impresora de recibos"),
                         })
                     
-            uploaded_file = st.file_uploader(label="Subir datos", type=['csv'])
             
-            if uploaded_file is not None:
-                st.write("uploaded_file")    
-                st.session_state['data'] = uploaded_file
-                st.write(st.session_state)
-            else:
-                st.write("not uploaded_file")
         with col2:
             #Visualización del gráfico Sanky
             st.subheader("Distribución jerárquica")
@@ -274,6 +267,16 @@ if __name__ == '__main__':
     #if 'data' not in st.session_state:
     #    st.session_state['data'] = data
     st.write("ml: ", ml)
+    uploaded_file = st.file_uploader(label="Subir datos", type=['csv'])
+            
+        if uploaded_file is not None:
+            st.write("uploaded_file")    
+            #st.session_state['data'] = uploaded_file
+            data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
+            st.write(st.session_state)
+        else:
+            st.write("not uploaded_file")
+                
     load()
 
     evaluate()
