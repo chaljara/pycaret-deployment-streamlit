@@ -36,7 +36,9 @@ customer_count = []
 links_filtered = []
 nlinks = 0
 
-#@st.cache_data
+ml = int(time.time() * 1000)
+
+@st.cache_data
 def load():
     global data
     global uploaded_file
@@ -271,13 +273,10 @@ if __name__ == '__main__':
     
     #if 'data' not in st.session_state:
     #    st.session_state['data'] = data
-    
+    st.write("ml: ", ml)
     st.write(st.session_state)
     load()
 
     evaluate()
 
     update_view()
-    
-    #if st.session_state.selectbox_customers != customerSelected:
-    #    st.session_state.selectbox_customers = customerSelected
