@@ -47,6 +47,7 @@ def load():
     milliseconds = int(time.time() * 1000)
     #Descarga del conjunto de datos
     #if uploaded_file is None:
+    st.write("Load")
     if 'data' not in st.session_state:
         credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
         storage_client = storage.Client(project=project_id, credentials=credentials)
@@ -85,7 +86,7 @@ def evaluate():
     global uploaded_file
     
     st.header('Módulo de detección de anomalías', divider='red')
-        
+    st.write("Evaluate")    
     #Preprocesamiento de los datos
     data['DATETIME'] = pd.to_datetime(data['DATETIME'])
     
@@ -204,7 +205,7 @@ def update_view():
     global uploaded_file
     global customer_count
     global nlinks
-    
+    st.write("Update")
     placeholder = st.empty()
 
     # Replace the chart with several elements:
