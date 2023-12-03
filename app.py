@@ -253,7 +253,7 @@ def update_view():
                                                                                 help="Promedio semanal del tiempo de inactividad de la impresora de recibos"),
                         })
                     
-            uploaded_file = st.file_uploader(label="Subir datos")
+            uploaded_file = st.file_uploader(label="Subir datos", type=['csv'])
             
             if uploaded_file is not None:
                 st.write("uploaded_file")    
