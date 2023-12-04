@@ -259,15 +259,10 @@ def update_view():
             
             if nlinks > 0:
                 st.bokeh_chart(hv.render(sankey, backend='bokeh'))
-    
-if __name__ == '__main__':
-    
-    
-    #if 'data' not in st.session_state:
-    #    st.session_state['data'] = data
-    st.write("ml: ", ml)
+                
     uploaded_file = st.file_uploader(label="Subir datos", type=['csv'])
-            
+    
+if __name__ == '__main__': 
     if uploaded_file is not None:
         st.write("uploaded_file")    
         #st.session_state['data'] = uploaded_file
