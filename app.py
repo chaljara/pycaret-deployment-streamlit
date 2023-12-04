@@ -126,7 +126,6 @@ def evaluate():
     n_anomalies = 0
 
     def custom_format(option):
-        customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,2]
         n_anomalies = customer_count.loc[customer_count["CUSTOMER"] == option]["Cantidad"]
         return customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,2]
 
