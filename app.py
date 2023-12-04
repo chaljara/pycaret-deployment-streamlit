@@ -36,34 +36,6 @@ customer_count = []
 links_filtered = []
 nlinks = 0
 
-ml = int(time.time() * 1000)
-
-def load():
-    global data
-    global uploaded_file
-    # Get the current time in milliseconds
-    milliseconds = int(time.time() * 1000)
-    #Descarga del conjunto de datos
-    #if uploaded_file is None:
-    st.write("Load: ", ml)
-    #if 'data' not in st.session_state:
-    #    credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
-    #    storage_client = storage.Client(project=project_id, credentials=credentials)
-        
-    #    bucket = storage_client.get_bucket(bucket_name)
-        
-    #    blob = bucket.blob(file_name)
-    #    dataset_filename = "dataset.csv"
-    #    blob.download_to_filename(dataset_filename)
-    #    st.write("Loaded default data "+str(milliseconds))
-    #    data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
-    #else:
-    #    st.write("Loaded state data "+str(milliseconds))
-    #    data = pd.read_csv(st.session_state['data'].getvalue(), sep=";", encoding="UTF-8")
-    #else:
-    #    data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
-    #    st.write("Loaded file data"+str(milliseconds))
-
 def evaluate():
     global data
     global data_g
@@ -198,7 +170,7 @@ def update_view():
     global uploaded_file
     global customer_count
     global nlinks
-    st.write("Update: ", ml)
+    
     placeholder = st.empty()
 
     # Replace the chart with several elements:
@@ -266,10 +238,7 @@ if __name__ == '__main__':
     uploaded_file = st.file_uploader(label="Subir datos", type=['csv'])
     
     if uploaded_file is not None:
-        st.write("uploaded_file")    
-        #st.session_state['data'] = uploaded_file
         data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
-        st.write(st.session_state)
     else:
         credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
         storage_client = storage.Client(project=project_id, credentials=credentials)
@@ -279,10 +248,6 @@ if __name__ == '__main__':
         blob = bucket.blob(file_name)
         dataset_filename = "dataset.csv"
         blob.download_to_filename(dataset_filename)
-        #st.write("Loaded default data "+str(milliseconds))
-        data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
-    load()
-
+        data = pd.read_csv(dataset_filename, sep=";", encoding="UTF-8")
     evaluate()
-
     update_view()
