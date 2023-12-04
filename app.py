@@ -37,8 +37,6 @@ links_filtered = []
 nlinks = 0
 
 ml = int(time.time() * 1000)
-st.set_page_config(layout="wide")
-st.write(st.session_state)
 
 def load():
     global data
@@ -82,8 +80,6 @@ def evaluate():
     global nlinks
     global uploaded_file
     
-    st.header('Módulo de detección de anomalías', divider='red')
-    st.write("Evaluate: ", ml)    
     #Preprocesamiento de los datos
     data['DATETIME'] = pd.to_datetime(data['DATETIME'])
     
@@ -260,9 +256,15 @@ def update_view():
             if nlinks > 0:
                 st.bokeh_chart(hv.render(sankey, backend='bokeh'))
                 
+    
+    
+if __name__ == '__main__':
+    
+    st.set_page_config(layout="wide")
+    st.header('Módulo de detección de anomalías', divider='red')
+    
     uploaded_file = st.file_uploader(label="Subir datos", type=['csv'])
     
-if __name__ == '__main__': 
     if uploaded_file is not None:
         st.write("uploaded_file")    
         #st.session_state['data'] = uploaded_file
