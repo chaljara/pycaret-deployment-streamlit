@@ -273,13 +273,19 @@ if __name__ == '__main__':
         #st.session_state['data'] = uploaded_file
         data = pd.read_csv(uploaded_file, sep=";", encoding="UTF-8")
         st.write(st.session_state)
-
-        load()
-    
-        evaluate()
-    
-        update_view()
     else:
-        st.write("not uploaded_file")
-                
-    
+        credentials = service_account.Credentials.from_service_account_file("google-credentials.json")
+        storage_client = storage.Client(project=project_id, credentials=credentials)
+        
+        bucket = storage_client.get_bucket(bucket_name)
+        
+        blob = bucket.blob(file_name)
+        dataset_filename = "dataset.csv"
+        blob.download_to_filename(dataset_filename)
+        st.write("Loaded default data "+str(milliseconds))
+        data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
+    load()
+
+    evaluate()
+
+    update_view()
