@@ -282,7 +282,7 @@ if __name__ == '__main__':
         blob = bucket.blob(file_name)
         dataset_filename = "dataset.csv"
         blob.download_to_filename(dataset_filename)
-        st.write("Loaded default data "+str(milliseconds))
+        #st.write("Loaded default data "+str(milliseconds))
         data = pd.read_csv("dataset.csv", sep=";", encoding="UTF-8")
     load()
 
