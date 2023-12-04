@@ -120,10 +120,13 @@ def evaluate():
     merged = anomalies.reset_index()
 
     customer_count = anomalies.groupby("CUSTOMER").agg(Cantidad = ("CUSTOMER","count")).reset_index()
-    customer_count["CUSTOMER_B"] = customer_count["CUSTOMER"].astype(str) + "   (" + customer_count["Cantidad"].astype(str) + ")"
+    customer_total = data_pivot_no_geo.groupby("CUSTOMER").agg(Total = ("CUSTOMER","count")).reset_index()
+    customer_count["Total"] = customer_total["Total"]
+    customer_count["CUSTOMER_B"] = customer_count["CUSTOMER"].astype(str) + "   (" + customer_count["Cantidad"].astype(str) + " de " + customer_count["Total"].astype(str) + ")"
     n_anomalies = 0
 
     def custom_format(option):
+        customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,2]
         n_anomalies = customer_count.loc[customer_count["CUSTOMER"] == option]["Cantidad"]
         return customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,2]
 
@@ -228,8 +231,6 @@ def update_view():
             if nlinks > 0:
                 st.bokeh_chart(hv.render(sankey, backend='bokeh'))
                 
-    
-    
 if __name__ == '__main__':
     
     st.set_page_config(layout="wide")
