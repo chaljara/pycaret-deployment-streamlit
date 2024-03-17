@@ -124,8 +124,6 @@ def evaluate():
     customer_count["Total"] = customer_total["Total"]
     customer_count["CUSTOMER_B"] = customer_count["CUSTOMER"].astype(str) + "   (" + customer_count["Cantidad"].astype(str) + " de " + customer_count["Total"].astype(str) + ")"
     n_anomalies = 0
-
-    st.dataframe(customer_count);
         
     def custom_format(option):
         n_anomalies = customer_count.loc[customer_count["CUSTOMER"] == option]["Cantidad"]
