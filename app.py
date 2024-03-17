@@ -129,7 +129,7 @@ def evaluate():
         
     def custom_format(option):
         n_anomalies = customer_count.loc[customer_count["CUSTOMER"] == option]["Cantidad"]
-        return customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,2]
+        return customer_count.loc[customer_count["CUSTOMER"] == option].iat[0,3]
 
     customerSelected = st.selectbox("Seleccione un cliente: ", customer_count["CUSTOMER"], format_func=custom_format)
 
