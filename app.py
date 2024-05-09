@@ -122,7 +122,7 @@ def evaluate():
     customer_count = anomalies.groupby("CUSTOMER").agg(Cantidad = ("CUSTOMER","count")).reset_index()
     customer_total = data_pivot_no_geo.groupby("CUSTOMER").agg(Total = ("CUSTOMER","count")).reset_index()
     customer_count["Total"] = customer_total["Total"]
-    customer_count["CUSTOMER_B"] = customer_count["CUSTOMER"].astype(str) + "   (" + customer_count["Cantidad"].astype(str) + " de " + customer_count["Total"].astype(str) + ")"
+    customer_count["CUSTOMER_B"] = customer_count["CUSTOMER"].astype(str) + "   (" + customer_count["Cantidad"].astype(str) + "anómalos de " + customer_count["Total"].astype(str) + ")"
     n_anomalies = 0
         
     def custom_format(option):
